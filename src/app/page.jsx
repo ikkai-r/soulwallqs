@@ -9,6 +9,7 @@ import VisualPage from './sections/VisualPage';
 import SpatialPage from './sections/SpatialPage';
 import TextualPage from './sections/TextualPage';
 import UEQSPage from './sections/UEQSPage';
+import BufferPage from './sections/BufferPage';
 
 export default function Home() {
 
@@ -17,12 +18,22 @@ export default function Home() {
 
   const [isValid, setIsValid] = useState(false);
 
+  const [selectedTask, setSelectedTask] = useState('');
+
+
   const sections = [
     { component: <DemoPage onValidationChange={setIsValid} />, requiresValidation: true },
     { component: <SBPage onValidationChange={setIsValid} />, requiresValidation: true },
-    { component: <NASAPage />, requiresValidation: false },
+    { component: <NASAPage setSelectedTask={setSelectedTask}/>, requiresValidation: false },
     { component: <SSQPage onValidationChange={setIsValid} />, requiresValidation: true },
-    { component: <VisualPage />, requiresValidation: false },
+    { component: <VisualPage selectedTask={selectedTask}/>, requiresValidation: false },
+    { component: <SpatialPage />, requiresValidation: false },
+    { component: <TextualPage />, requiresValidation: false },
+    { component: <UEQSPage onValidationChange={setIsValid} />, requiresValidation: true },
+    { component: <BufferPage/>, requiresValidation: false },
+    { component: <NASAPage setSelectedTask={setSelectedTask}/>, requiresValidation: false },
+    { component: <SSQPage onValidationChange={setIsValid} />, requiresValidation: true },
+    { component: <VisualPage selectedTask={selectedTask}/>, requiresValidation: false },
     { component: <SpatialPage />, requiresValidation: false },
     { component: <TextualPage />, requiresValidation: false },
     { component: <UEQSPage onValidationChange={setIsValid} />, requiresValidation: true }

@@ -1,14 +1,7 @@
 import { useState } from "react";
 
-export default function NASAPage({setSelectedTask, responses, setResponses }) {
+export default function NASAPage({selectedTask, responses, setResponses }) {
 
-  const handleTaskChange = (e) => {
-    setResponses((prevResponses) => ({
-      ...prevResponses,
-      task: e.target.value
-    }));
-  };
-  
   const handleSliderChange = (e) => {
     setResponses((prev) => ({
       ...prev,
@@ -24,16 +17,6 @@ export default function NASAPage({setSelectedTask, responses, setResponses }) {
       </p>
 
       <form className="mx-auto w-1/2 flex flex-col gap-16">
-
-      <div className="w-full">
-               <label htmlFor="task" className="block mb-2 text-sm font-medium text-gray-900 ">Task</label>
-                <select id="task" name="task"  value={responses.task || ''} onChange={handleTaskChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                  <option disabled value="">Select the task you performed</option>
-                  <option>SoulWall</option>
-                  <option>Map</option>
-                </select>
-            </div>
-
         <div className='w-full flex flex-row gap-5 items-center justify-center'>
         
             <div className="w-full">
@@ -63,7 +46,6 @@ export default function NASAPage({setSelectedTask, responses, setResponses }) {
             </div>
         </div>
     
-
         <div className='w-full flex flex-row gap-5 items-center justify-center'>
         
           <div className="w-full">

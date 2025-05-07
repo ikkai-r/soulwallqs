@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import DemoPage from './sections/DemoPage';
 import SBPage from './sections/SBPage';
 import NASAPage from './sections/NASAPage';
@@ -25,8 +25,19 @@ export default function Home() {
 
   const [isValid, setIsValid] = useState(false);
 
+  console.log('sbResponses', sbResponses);
+  console.log('ssqResponses', ssqResponses);
+  console.log('ueqsResponses', ueqsResponses);
+  console.log('nasaResponses', nasaResponses);
 
-  console.log('textualResponses', textualResponses);
+  
+  useEffect(() => {
+    if (demoResponses.demoTask) {
+      setNASAResponses((prev) => ({ ...prev, selectedTask: demoResponses.demoTask }));
+      setSSQResponses((prev) => ({ ...prev, selectedTask: demoResponses.demoTask }));
+      setUEQSResponses((prev) => ({ ...prev, selectedTask: demoResponses.demoTask }));
+    }
+  }, [demoResponses.demoTask]);
 
 
 //TODO: Change the requiresValidation to true after testing
@@ -93,7 +104,6 @@ export default function Home() {
     { 
       component: (props) => (
         <NASAPage 
-          selectedTask={demoResponses.demoTask}
           responses={nasaResponses}
           setResponses={setNASAResponses}
           onValidationChange={setIsValid}
@@ -105,7 +115,6 @@ export default function Home() {
     { 
       component: (props) => (
         <SSQPage 
-          selectedTask={demoResponses.demoTask}
           responses={ssqResponses}
           setResponses={setSSQResponses}
           onValidationChange={setIsValid}
@@ -117,7 +126,6 @@ export default function Home() {
     { 
       component: (props) => (
         <UEQSPage 
-          selectedTask={demoResponses.demoTask}
           responses={ueqsResponses}
           setResponses={setUEQSResponses}
           onValidationChange={setIsValid}
@@ -151,6 +159,27 @@ export default function Home() {
     setCurrentSection((prev) => prev - 1);
   };
 
+  const handleSave = async () => {
+    const allData = {
+      demoResponses,
+      sbResponses,
+      ssqResponses,
+      visualResponses,
+      spatialResponses,
+      textualResponses,
+      ueqsResponses,
+      nasaResponses,
+    };
+  
+    await fetch('http://localhost:3001/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        data: allData  
+      }),
+    });
+  };
+
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
         <p className='text-4xl font-semibold'>SoulWall Questionnaire</p>
@@ -172,6 +201,15 @@ export default function Home() {
               className="fixed bottom-10 left-10 px-10 py-5 bg-black text-white rounded text-xl cursor-pointer"
             >
               Previous
+            </button>
+          )}
+
+          {currentSection === sections.length - 2 && (
+            <button
+              onClick={handleSave}
+              className="fixed bottom-10 right-10 px-10 py-5 bg-black text-white rounded text-xl cursor-pointer"
+            >
+              Submit
             </button>
           )}
 

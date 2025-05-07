@@ -10,6 +10,15 @@ export default function TextualPage() {
     '16.jpg', '17.jpg', '18.png', '19.jpg', '20.jpg'
   ];
 
+  const [responses, setResponses] = useState({});
+
+  const handleChange = (e, index) => {
+    setResponses(prev => ({
+      ...prev,
+      [`art${index + 1}`]: e.target.value,
+    }));
+  };
+
     return (
       <div className="flex flex-col items-center min-h-screen p-10 gap-12 font-[family-name:var(--font-geist-sans)] w-full">
            <form className='grid grid-cols-4 gap-32 w-full'>
@@ -29,7 +38,7 @@ export default function TextualPage() {
                   id={`art${index + 1}`}
                   className="block py-2.5 px-0 w-full mt-2 text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-900 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600"
                   placeholder=" "
-                  required
+                  onChange={(e) => handleChange(e, index)}
                 />
               </div>
             ))}

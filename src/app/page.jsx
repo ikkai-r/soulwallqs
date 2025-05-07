@@ -11,31 +11,44 @@ import TextualPage from './sections/TextualPage';
 import UEQSPage from './sections/UEQSPage';
 
 export default function Home() {
-  const sections = [<DemoPage key="demo" />,
-                    <SBPage key="sb" />,
-                    <NASAPage key="nasa" />,
-                    <SSQPage key="ssq" />,
-                    <VisualPage key="visual" />,
-                    <SpatialPage key="spatial" />,
-                    <TextualPage key="textual" />,
-                    <UEQSPage key="ueqs" />];
+
 
   const [currentSection, setCurrentSection] = useState(0);
 
+  const [isValid, setIsValid] = useState(false);
+
+  const sections = [
+    { component: <DemoPage onValidationChange={setIsValid} />, requiresValidation: true },
+    { component: <SBPage onValidationChange={setIsValid} />, requiresValidation: true },
+    { component: <NASAPage onValidationChange={setIsValid} />, requiresValidation: true },
+    { component: <SSQPage onValidationChange={setIsValid} />, requiresValidation: true },
+    { component: <VisualPage />, requiresValidation: false },
+    { component: <SpatialPage />, requiresValidation: false },
+    { component: <TextualPage />, requiresValidation: false },
+    { component: <UEQSPage onValidationChange={setIsValid} />, requiresValidation: true }
+  ];
+
   const handleNext = () => {
-    setCurrentSection((prev) => (prev + 1) % sections.length);
+    const current = sections[currentSection];
+
+    if (current.requiresValidation && !isValid) {
+      alert('Please complete all required fields before continuing.');
+      return;
+    }
+
+    setCurrentSection((prev) => prev + 1);
   };
 
   const handlePrevious = () => {
-    setCurrentSection((prev) => (prev - 1 + sections.length) % sections.length);
-  }
+    setCurrentSection((prev) => prev - 1);
+  };
 
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-        <p className='text-4xl font-semibold'>SoulWall</p>
+        <p className='text-4xl font-semibold'>SoulWall Questionnaire</p>
 
         <div className='w-full px-10 py-5 bg-zinc-200 rounded-lg shadow-lg'> 
-          {sections[currentSection]}
+          {sections[currentSection].component}
           {currentSection < sections.length - 1 && (
             <button
               onClick={handleNext}

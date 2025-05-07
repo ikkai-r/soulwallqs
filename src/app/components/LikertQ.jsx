@@ -1,9 +1,9 @@
-export default function LikertQ({ question, name, onChange }) {
+export default function LikertQ({ question, name, onChange, first, last }) {
     return (
-      <div className="w-full flex flex-col gap-3">
+      <div className="w-full flex flex-col gap-3 border-b-2 border-gray-300 pb-5">
         <p>{question}</p>
         <fieldset className="w-full flex flex-row items-center justify-center gap-5">
-          <p>Strongly agree</p>
+          <p>{first}</p>
           {[1, 2, 3, 4, 5, 6, 7].map((value) => (
             <div key={value} className="flex flex-row items-center">
               <input
@@ -22,7 +22,7 @@ export default function LikertQ({ question, name, onChange }) {
               </label>
             </div>
           ))}
-          <p>Strongly disagree</p>
+          <p>{last}</p>
         </fieldset>
       </div>
     );

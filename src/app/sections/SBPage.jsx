@@ -34,76 +34,106 @@ export default function SBPage({ onValidationChange }) {
             question="1. I am very good at giving directions."
             name="q1"
             onChange={handleChange}
+            first={"Strongly agree"}
+            last={"Strongly disagree"}
           />
           <LikertQ
             question="2. I have a poor memory for where I left things."
             name="q2"
             onChange={handleChange}
+            first={"Strongly agree"}
+            last={"Strongly disagree"}
           />
           <LikertQ
             question="3. I am very good at judging distances."
             name="q3"
             onChange={handleChange}
+            first={"Strongly agree"}
+            last={"Strongly disagree"}
           />
           <LikertQ
             question="4. My sense of direction is very good."
             name="q4"
             onChange={handleChange}
+            first={"Strongly agree"}
+            last={"Strongly disagree"}
           />
           <LikertQ
             question="5. I tend to think of my environment in terms of cardinal directions (N,S,E,W)."
             name="q5"
             onChange={handleChange}
+            first={"Strongly agree"}
+            last={"Strongly disagree"}
           />
           <LikertQ
             question="6. I very easily get lost in a new city."
             name="q6"
             onChange={handleChange}
+            first={"Strongly agree"}
+            last={"Strongly disagree"}
           />
           <LikertQ
             question="7. I enjoy reading maps."
             name="q7"
             onChange={handleChange}
+            first={"Strongly agree"}
+            last={"Strongly disagree"}
           />
           <LikertQ
             question="8. I have trouble understanding directions."
             name="q8"
             onChange={handleChange}
+            first={"Strongly agree"}
+            last={"Strongly disagree"}
           />
           <LikertQ
             question="9. I am very good at reading maps."
             name="q9"
             onChange={handleChange}
+            first={"Strongly agree"}
+            last={"Strongly disagree"}
           />
           <LikertQ
             question="10. I don't remember routes very well while riding as a passenger in a car."
             name="q10"
             onChange={handleChange}
+            first={"Strongly agree"}
+            last={"Strongly disagree"}
           />
           <LikertQ
             question="11. I don't enjoy giving directions."
             name="q11"
             onChange={handleChange}
+            first={"Strongly agree"}
+            last={"Strongly disagree"}
           />
           <LikertQ
             question="12. It's not important to me to know where I am."
             name="q12"
             onChange={handleChange}
+            first={"Strongly agree"}
+            last={"Strongly disagree"}
           />
           <LikertQ
             question="13. I usually let someone else do the navigational planning for long trips."
             name="q13"
             onChange={handleChange}
+            first={"Strongly agree"}
+            last={"Strongly disagree"}
           />
           <LikertQ
             question="14. I can usually remember a new route after I have traveled it only once."
             name="q14"
             onChange={handleChange}
+            first={"Strongly agree"}
+            last={"Strongly disagree"}
           />
           <LikertQ
             question="15. I don't have a very good mental map of my environment."
             name="q15"
             onChange={handleChange}
+            first={"Strongly agree"}
+            last={"Strongly disagree"}
           />
         </form>
        

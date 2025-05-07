@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import React from 'react';
+import React, {useState} from 'react';
 
 export default function TextualPage() {
 
@@ -21,7 +21,11 @@ export default function TextualPage() {
 
     return (
       <div className="flex flex-col items-center min-h-screen p-10 gap-12 font-[family-name:var(--font-geist-sans)] w-full">
+
+        <p>Please type the names or the titles of the artworks in the space below. If you do not remember them, leave them empty.</p>
+
            <form className='grid grid-cols-4 gap-32 w-full'>
+
             
            {imageList.map((filename, index) => (
               <div key={index} className="relative z-0 w-full mb-5 group">
@@ -37,7 +41,8 @@ export default function TextualPage() {
                   name={`art${index + 1}`}
                   id={`art${index + 1}`}
                   className="block py-2.5 px-0 w-full mt-2 text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-900 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600"
-                  placeholder=" "
+                  placeholder=""
+                  value={responses[`art${index + 1}`] || ''}
                   onChange={(e) => handleChange(e, index)}
                 />
               </div>

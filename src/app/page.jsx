@@ -30,13 +30,14 @@ export default function Home() {
     { component: <SpatialPage />, requiresValidation: false },
     { component: <TextualPage />, requiresValidation: false },
     { component: <UEQSPage onValidationChange={setIsValid} />, requiresValidation: true },
-    { component: <BufferPage/>, requiresValidation: false },
+    { component: <BufferPage text={'Finish the other task before clicking the next button.'}/>, requiresValidation: false },
     { component: <NASAPage setSelectedTask={setSelectedTask}/>, requiresValidation: false },
     { component: <SSQPage onValidationChange={setIsValid} />, requiresValidation: true },
     { component: <VisualPage selectedTask={selectedTask}/>, requiresValidation: false },
     { component: <SpatialPage />, requiresValidation: false },
     { component: <TextualPage />, requiresValidation: false },
-    { component: <UEQSPage onValidationChange={setIsValid} />, requiresValidation: true }
+    { component: <UEQSPage onValidationChange={setIsValid} />, requiresValidation: true },
+    { component: <BufferPage text={'Thank you for participating.'}/>, requiresValidation: false },
   ];
 
   const handleNext = () => {

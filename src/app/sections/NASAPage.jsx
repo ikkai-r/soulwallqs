@@ -36,7 +36,7 @@ export default function NASAPage({setSelectedTask}) {
       <div className="w-full">
                <label htmlFor="task" className="block mb-2 text-sm font-medium text-gray-900 ">Task</label>
                 <select id="task" name="task" defaultValue="" onChange={handleTaskChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                  <option disabled selected value="">Select the task you performed</option>
+                  <option disabled value="">Select the task you performed</option>
                   <option>SoulWall</option>
                   <option>Map</option>
                 </select>

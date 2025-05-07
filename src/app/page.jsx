@@ -22,21 +22,21 @@ export default function Home() {
 
 
   const sections = [
-    { component: <DemoPage onValidationChange={setIsValid} />, requiresValidation: true },
-    { component: <SBPage onValidationChange={setIsValid} />, requiresValidation: true },
+    { component: <DemoPage onValidationChange={setIsValid} />, requiresValidation: false },
+    { component: <SBPage onValidationChange={setIsValid} />, requiresValidation: false },
     { component: <NASAPage setSelectedTask={setSelectedTask}/>, requiresValidation: false },
-    { component: <SSQPage onValidationChange={setIsValid} />, requiresValidation: true },
+    { component: <SSQPage onValidationChange={setIsValid} />, requiresValidation: false },
     { component: <VisualPage selectedTask={selectedTask}/>, requiresValidation: false },
     { component: <SpatialPage />, requiresValidation: false },
     { component: <TextualPage />, requiresValidation: false },
-    { component: <UEQSPage onValidationChange={setIsValid} />, requiresValidation: true },
+    { component: <UEQSPage onValidationChange={setIsValid} />, requiresValidation: false },
     { component: <BufferPage text={'Finish the other task before clicking the next button.'}/>, requiresValidation: false },
     { component: <NASAPage setSelectedTask={setSelectedTask}/>, requiresValidation: false },
-    { component: <SSQPage onValidationChange={setIsValid} />, requiresValidation: true },
+    { component: <SSQPage onValidationChange={setIsValid} />, requiresValidation: false },
     { component: <VisualPage selectedTask={selectedTask}/>, requiresValidation: false },
     { component: <SpatialPage />, requiresValidation: false },
     { component: <TextualPage />, requiresValidation: false },
-    { component: <UEQSPage onValidationChange={setIsValid} />, requiresValidation: true },
+    { component: <UEQSPage onValidationChange={setIsValid} />, requiresValidation: false },
     { component: <BufferPage text={'Thank you for participating.'}/>, requiresValidation: false },
   ];
 

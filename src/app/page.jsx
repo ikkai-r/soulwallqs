@@ -20,7 +20,7 @@ export default function Home() {
 
   const [selectedTask, setSelectedTask] = useState('');
 
-
+//TODO: Change the requiresValidation to true after testing
   const sections = [
     { component: <DemoPage onValidationChange={setIsValid} />, requiresValidation: false },
     { component: <SBPage onValidationChange={setIsValid} />, requiresValidation: false },

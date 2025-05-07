@@ -49,7 +49,10 @@ export default function VisualPage({selectedTask}) {
   ];
 
     return (
-      <div>
+      <div className='items-center'>
+         <p className='text-xl mb-5 mt-10 font-bold'>Visual</p>
+        <p className='text-lg mb-5 mt-5'>Please cross the artworks that you remember were present.</p>
+        <hr className='mb-10 border-1'></hr>
       {selectedTask === 'SoulWall' ? (
         <VisualComp imageOptions={soulWallImgs} />
       ) : (

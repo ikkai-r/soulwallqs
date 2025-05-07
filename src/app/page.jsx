@@ -20,7 +20,7 @@ export default function Home() {
   const sections = [
     { component: <DemoPage onValidationChange={setIsValid} />, requiresValidation: true },
     { component: <SBPage onValidationChange={setIsValid} />, requiresValidation: true },
-    { component: <NASAPage onValidationChange={setIsValid} />, requiresValidation: true },
+    { component: <NASAPage />, requiresValidation: false },
     { component: <SSQPage onValidationChange={setIsValid} />, requiresValidation: true },
     { component: <VisualPage />, requiresValidation: false },
     { component: <SpatialPage />, requiresValidation: false },

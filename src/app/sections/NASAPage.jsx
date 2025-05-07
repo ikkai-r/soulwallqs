@@ -1,22 +1,14 @@
 import { useState } from "react";
 
-export default function NASAPage({setSelectedTask}) {
+export default function NASAPage({setSelectedTask, responses, setResponses }) {
 
   const handleTaskChange = (e) => {
-    const value = e.target.value;
-    setSelectedTask(value);
+    setResponses((prevResponses) => ({
+      ...prevResponses,
+      task: e.target.value
+    }));
   };
   
-  const [responses, setResponses] = useState({
-    mentalDemand: 50,
-    physicalDemand: 50,
-    temporalDemand: 50,
-    performance: 50,
-    effort: 50,
-    frustration: 50,
-  });
-
-
   const handleSliderChange = (e) => {
     setResponses((prev) => ({
       ...prev,
@@ -35,7 +27,7 @@ export default function NASAPage({setSelectedTask}) {
 
       <div className="w-full">
                <label htmlFor="task" className="block mb-2 text-sm font-medium text-gray-900 ">Task</label>
-                <select id="task" name="task" defaultValue="" onChange={handleTaskChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                <select id="task" name="task"  value={responses.task || ''} onChange={handleTaskChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                   <option disabled value="">Select the task you performed</option>
                   <option>SoulWall</option>
                   <option>Map</option>
@@ -55,8 +47,8 @@ export default function NASAPage({setSelectedTask}) {
                 name="mentalDemand"
                 min="0"
                 max="100"
-                step="5"
-                value={responses.mentalDemand}
+                step="1"
+                value={responses.mentalDemand || ''}
                 onChange={handleSliderChange}
                 className="w-full"
               />
@@ -67,7 +59,7 @@ export default function NASAPage({setSelectedTask}) {
             </div>
 
             <div className="mt-10 ml-10">
-            {responses.mentalDemand}
+            {responses.mentalDemand || ''}
             </div>
         </div>
     
@@ -85,8 +77,8 @@ export default function NASAPage({setSelectedTask}) {
               name="physicalDemand"
               min="0"
               max="100"
-              step="5"
-              value={responses.physicalDemand}
+              step="1"
+              value={responses.physicalDemand || ''}
               onChange={handleSliderChange}
               className="w-full"
             />
@@ -97,7 +89,7 @@ export default function NASAPage({setSelectedTask}) {
           </div>
 
           <div className="mt-10 ml-10">
-          {responses.physicalDemand}
+          {responses.physicalDemand || ''}
           </div>
 
       </div>
@@ -115,8 +107,8 @@ export default function NASAPage({setSelectedTask}) {
               name="temporalDemand"
               min="0"
               max="100"
-              step="5"
-              value={responses.temporalDemand}
+              step="1"
+              value={responses.temporalDemand || ''}
               onChange={handleSliderChange}
               className="w-full"
             />
@@ -127,7 +119,7 @@ export default function NASAPage({setSelectedTask}) {
           </div>
 
           <div className="mt-10 ml-10">
-          {responses.temporalDemand}
+          {responses.temporalDemand || ''}
           </div>
           
       </div>
@@ -145,8 +137,8 @@ export default function NASAPage({setSelectedTask}) {
             name="performance"
             min="0"
             max="100"
-            step="5"
-            value={responses.performance}
+            step="1"
+            value={responses.performance || ''}
             onChange={handleSliderChange}
             className="w-full"
           />
@@ -157,7 +149,7 @@ export default function NASAPage({setSelectedTask}) {
         </div>
 
         <div className="mt-10 ml-10">
-        {responses.performance}
+        {responses.performance || ''}
         </div>
         
     </div>
@@ -175,8 +167,8 @@ export default function NASAPage({setSelectedTask}) {
             name="effort"
             min="0"
             max="100"
-            step="5"
-            value={responses.effort}
+            step="1"
+            value={responses.effort || ''}
             onChange={handleSliderChange}
             className="w-full"
           />
@@ -187,7 +179,7 @@ export default function NASAPage({setSelectedTask}) {
         </div>
 
         <div className="mt-10 ml-10">
-        {responses.effort}
+        {responses.effort || ''}
         </div>
         
     </div>
@@ -205,8 +197,8 @@ export default function NASAPage({setSelectedTask}) {
             name="frustration"
             min="0"
             max="100"
-            step="5"
-            value={responses.frustration}
+            step="1"
+            value={responses.frustration || ''}
             onChange={handleSliderChange}
             className="w-full"
           />
@@ -217,7 +209,7 @@ export default function NASAPage({setSelectedTask}) {
         </div>
 
         <div className="mt-10 ml-10">
-        {responses.frustration}
+        {responses.frustration || ''}
         </div>
         
     </div>

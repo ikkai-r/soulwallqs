@@ -1,4 +1,3 @@
-
 'use client';
 import { useState } from 'react';
 import DemoPage from './sections/DemoPage';
@@ -13,31 +12,128 @@ import BufferPage from './sections/BufferPage';
 
 export default function Home() {
 
+  const [demoResponses, setDemoResponses] = useState({});
+  const [sbResponses, setsbResponses] = useState({});
+  const [ssqResponses, setSSQResponses] = useState({});
+  const [visualResponses, setVisualResponses] = useState([]);
+  const [spatialResponses, setSpatialResponses] = useState({});
+  const [textualResponses, setTextualResponses] = useState({});
+  const [ueqsResponses, setUEQSResponses] = useState({});
+  const [nasaResponses, setNASAResponses] = useState({});
 
   const [currentSection, setCurrentSection] = useState(0);
 
   const [isValid, setIsValid] = useState(false);
 
-  const [selectedTask, setSelectedTask] = useState('');
+
+  console.log('textualResponses', textualResponses);
+
 
 //TODO: Change the requiresValidation to true after testing
   const sections = [
-    { component: <DemoPage onValidationChange={setIsValid} />, requiresValidation: false },
-    { component: <SBPage onValidationChange={setIsValid} />, requiresValidation: false },
-    { component: <NASAPage setSelectedTask={setSelectedTask}/>, requiresValidation: false },
-    { component: <SSQPage onValidationChange={setIsValid} />, requiresValidation: false },
-    { component: <VisualPage selectedTask={selectedTask}/>, requiresValidation: false },
-    { component: <SpatialPage />, requiresValidation: false },
-    { component: <TextualPage />, requiresValidation: false },
-    { component: <UEQSPage onValidationChange={setIsValid} />, requiresValidation: false },
-    { component: <BufferPage text={'Finish the other task before clicking the next button.'}/>, requiresValidation: false },
-    { component: <NASAPage setSelectedTask={setSelectedTask}/>, requiresValidation: false },
-    { component: <SSQPage onValidationChange={setIsValid} />, requiresValidation: false },
-    { component: <VisualPage selectedTask={selectedTask}/>, requiresValidation: false },
-    { component: <SpatialPage />, requiresValidation: false },
-    { component: <TextualPage />, requiresValidation: false },
-    { component: <UEQSPage onValidationChange={setIsValid} />, requiresValidation: false },
-    { component: <BufferPage text={'Thank you for participating.'}/>, requiresValidation: false },
+    { 
+      component: (props) => (
+        <DemoPage 
+          responses={demoResponses}
+          setResponses={setDemoResponses}
+          onValidationChange={setIsValid}
+          {...props}
+        />
+      ), 
+      requiresValidation: false 
+    },
+    { 
+      component: (props) => (
+        <SBPage 
+          responses={sbResponses}
+          setResponses={setsbResponses}
+          onValidationChange={setIsValid}
+          {...props}
+        />
+      ), 
+      requiresValidation: false 
+    },
+    { 
+      component: (props) => (
+        <VisualPage 
+          selectedTask={demoResponses.demoTask}
+          responses={visualResponses}
+          setResponses={setVisualResponses}
+          onValidationChange={setIsValid}
+          {...props}
+        />
+      ), 
+      requiresValidation: false 
+    },
+    { 
+      component: (props) => (
+        <SpatialPage 
+          selectedTask={demoResponses.demoTask}
+          responses={spatialResponses}
+          setResponses={setSpatialResponses}
+          onValidationChange={setIsValid}
+          {...props}
+        />
+      ), 
+      requiresValidation: false 
+    },
+    { 
+      component: (props) => (
+        <TextualPage 
+          selectedTask={demoResponses.demoTask}
+          responses={textualResponses}
+          setResponses={setTextualResponses}
+          onValidationChange={setIsValid}
+          {...props}
+        />
+      ), 
+      requiresValidation: false 
+    },
+    
+    { 
+      component: (props) => (
+        <NASAPage 
+          selectedTask={demoResponses.demoTask}
+          responses={nasaResponses}
+          setResponses={setNASAResponses}
+          onValidationChange={setIsValid}
+          {...props}
+        />
+      ), 
+      requiresValidation: false 
+    },
+    { 
+      component: (props) => (
+        <SSQPage 
+          selectedTask={demoResponses.demoTask}
+          responses={ssqResponses}
+          setResponses={setSSQResponses}
+          onValidationChange={setIsValid}
+          {...props}
+        />
+      ), 
+      requiresValidation: false 
+    },
+    { 
+      component: (props) => (
+        <UEQSPage 
+          selectedTask={demoResponses.demoTask}
+          responses={ueqsResponses}
+          setResponses={setUEQSResponses}
+          onValidationChange={setIsValid}
+          {...props}
+        />
+      ), 
+      requiresValidation: false 
+    },
+    { 
+      component: (props) => (
+        <BufferPage
+          text={'Thank you for participating.'}
+        />
+      ), 
+      requiresValidation: false 
+    },
   ];
 
   const handleNext = () => {
@@ -47,7 +143,7 @@ export default function Home() {
       alert('Please complete all required fields before continuing.');
       return;
     }
-
+    
     setCurrentSection((prev) => prev + 1);
   };
 
@@ -60,7 +156,7 @@ export default function Home() {
         <p className='text-4xl font-semibold'>SoulWall Questionnaire</p>
 
         <div className='w-full px-10 py-5 bg-zinc-200 rounded-lg shadow-lg'> 
-          {sections[currentSection].component}
+        {sections[currentSection].component({})}
           {currentSection < sections.length - 1 && (
             <button
               onClick={handleNext}

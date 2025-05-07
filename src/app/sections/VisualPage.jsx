@@ -1,7 +1,6 @@
 import VisualComp from "../components/VisualComp";
 
-export default function VisualPage({selectedTask}) {
-
+export default function VisualPage({selectedTask, responses, setResponses}) {
   const soulWallImgs = [
     { id: 1, src: '/img/1.png', alt: 'Option 1' },
     { id: 2, src: '/img/23.png', alt: 'Option 2' },
@@ -54,9 +53,9 @@ export default function VisualPage({selectedTask}) {
         <p className='text-lg mb-5 mt-5'>Please cross the artworks that you remember were present.</p>
         <hr className='mb-10 border-1'></hr>
       {selectedTask === 'SoulWall' ? (
-        <VisualComp imageOptions={soulWallImgs} />
+        <VisualComp imageOptions={soulWallImgs} responses={responses} setResponses={setResponses} />
       ) : (
-        <VisualComp imageOptions={mapImgs} />
+        <VisualComp imageOptions={mapImgs} responses={responses} setResponses={setResponses}  />
       )}
     </div>
     );

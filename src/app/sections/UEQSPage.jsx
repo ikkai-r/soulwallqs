@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
 import LikertQ from "../components/LikertQ";
 
-export default function UEQSPage({ onValidationChange }) {
-  const [responses, setResponses] = useState({});
-
+export default function UEQSPage({ onValidationChange, responses, setResponses}) {
   const requiredFields = Array.from({ length: 8 }, (_, i) => `q${i + 1}`);
 
   const handleChange = (e) => {
@@ -33,6 +31,7 @@ export default function UEQSPage({ onValidationChange }) {
             onChange={handleChange}
             first={"obstructive"}
             last={"supportive"}
+            value={responses.q1 || ""}
           />
           <LikertQ
             question=""
@@ -40,6 +39,7 @@ export default function UEQSPage({ onValidationChange }) {
             onChange={handleChange}
             first={"complicated"}
             last={"easy"}
+            value={responses.q2 || ""}
           />
           <LikertQ
             question=""
@@ -47,6 +47,7 @@ export default function UEQSPage({ onValidationChange }) {
             onChange={handleChange}
             first={"inefficient"}
             last={"efficient"}
+            value={responses.q3 || ""}
           />
           <LikertQ
             question=""
@@ -54,6 +55,7 @@ export default function UEQSPage({ onValidationChange }) {
             onChange={handleChange}
             first={"clear"}
             last={"confusing"}
+            value={responses.q4 || ""}
           />
           <LikertQ
             question=""
@@ -61,6 +63,7 @@ export default function UEQSPage({ onValidationChange }) {
             onChange={handleChange}
             first={"boring"}
             last={"exciting"}
+            value={responses.q5 || ""}
           />
           <LikertQ
             question=""
@@ -68,6 +71,7 @@ export default function UEQSPage({ onValidationChange }) {
             onChange={handleChange}
             first={"not interesting"}
             last={"interesting"}
+            value={responses.q6 || ""}
           />
           <LikertQ
             question=""
@@ -75,6 +79,7 @@ export default function UEQSPage({ onValidationChange }) {
             onChange={handleChange}
             first={"conventional"}
             last={"inventive"}
+            value={responses.q7 || ""}
           />
           <LikertQ
             question=""
@@ -82,6 +87,7 @@ export default function UEQSPage({ onValidationChange }) {
             onChange={handleChange}
             first={"usual"}
             last={"leading edge"}
+            value={responses.q8 || ""}
           />
          
         </form>

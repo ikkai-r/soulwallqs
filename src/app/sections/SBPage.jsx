@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
 import LikertQ from "../components/LikertQ";
 
-export default function SBPage({ onValidationChange }) {
-  const [responses, setResponses] = useState({});
-
+export default function SBPage({ onValidationChange, responses, setResponses }) {
   const requiredFields = Array.from({ length: 15 }, (_, i) => `q${i + 1}`);
 
   const handleChange = (e) => {
@@ -36,6 +34,7 @@ export default function SBPage({ onValidationChange }) {
             onChange={handleChange}
             first={"Strongly agree"}
             last={"Strongly disagree"}
+            value={responses.q1 || ""}
           />
           <LikertQ
             question="2. I have a poor memory for where I left things."
@@ -43,6 +42,7 @@ export default function SBPage({ onValidationChange }) {
             onChange={handleChange}
             first={"Strongly agree"}
             last={"Strongly disagree"}
+            value={responses.q2 || ""}
           />
           <LikertQ
             question="3. I am very good at judging distances."
@@ -50,6 +50,7 @@ export default function SBPage({ onValidationChange }) {
             onChange={handleChange}
             first={"Strongly agree"}
             last={"Strongly disagree"}
+            value={responses.q3 || ""}
           />
           <LikertQ
             question="4. My sense of direction is very good."
@@ -57,6 +58,7 @@ export default function SBPage({ onValidationChange }) {
             onChange={handleChange}
             first={"Strongly agree"}
             last={"Strongly disagree"}
+            value={responses.q4 || ""}
           />
           <LikertQ
             question="5. I tend to think of my environment in terms of cardinal directions (N,S,E,W)."
@@ -64,6 +66,7 @@ export default function SBPage({ onValidationChange }) {
             onChange={handleChange}
             first={"Strongly agree"}
             last={"Strongly disagree"}
+            value={responses.q5 || ""}
           />
           <LikertQ
             question="6. I very easily get lost in a new city."
@@ -71,6 +74,7 @@ export default function SBPage({ onValidationChange }) {
             onChange={handleChange}
             first={"Strongly agree"}
             last={"Strongly disagree"}
+            value={responses.q6 || ""}
           />
           <LikertQ
             question="7. I enjoy reading maps."
@@ -78,6 +82,7 @@ export default function SBPage({ onValidationChange }) {
             onChange={handleChange}
             first={"Strongly agree"}
             last={"Strongly disagree"}
+            value={responses.q7 || ""}
           />
           <LikertQ
             question="8. I have trouble understanding directions."
@@ -85,6 +90,7 @@ export default function SBPage({ onValidationChange }) {
             onChange={handleChange}
             first={"Strongly agree"}
             last={"Strongly disagree"}
+            value={responses.q8 || ""}
           />
           <LikertQ
             question="9. I am very good at reading maps."
@@ -92,6 +98,7 @@ export default function SBPage({ onValidationChange }) {
             onChange={handleChange}
             first={"Strongly agree"}
             last={"Strongly disagree"}
+            value={responses.q9 || ""}
           />
           <LikertQ
             question="10. I don't remember routes very well while riding as a passenger in a car."
@@ -99,6 +106,7 @@ export default function SBPage({ onValidationChange }) {
             onChange={handleChange}
             first={"Strongly agree"}
             last={"Strongly disagree"}
+            value={responses.q10 || ""}
           />
           <LikertQ
             question="11. I don't enjoy giving directions."
@@ -106,6 +114,7 @@ export default function SBPage({ onValidationChange }) {
             onChange={handleChange}
             first={"Strongly agree"}
             last={"Strongly disagree"}
+            value={responses.q11 || ""}
           />
           <LikertQ
             question="12. It's not important to me to know where I am."
@@ -113,6 +122,7 @@ export default function SBPage({ onValidationChange }) {
             onChange={handleChange}
             first={"Strongly agree"}
             last={"Strongly disagree"}
+            value={responses.q12 || ""}
           />
           <LikertQ
             question="13. I usually let someone else do the navigational planning for long trips."
@@ -120,6 +130,7 @@ export default function SBPage({ onValidationChange }) {
             onChange={handleChange}
             first={"Strongly agree"}
             last={"Strongly disagree"}
+            value={responses.q13 || ""}
           />
           <LikertQ
             question="14. I can usually remember a new route after I have traveled it only once."
@@ -127,6 +138,7 @@ export default function SBPage({ onValidationChange }) {
             onChange={handleChange}
             first={"Strongly agree"}
             last={"Strongly disagree"}
+            value={responses.q14 || ""}
           />
           <LikertQ
             question="15. I don't have a very good mental map of my environment."
@@ -134,10 +146,9 @@ export default function SBPage({ onValidationChange }) {
             onChange={handleChange}
             first={"Strongly agree"}
             last={"Strongly disagree"}
+            value={responses.q15 || ""}
           />
         </form>
-       
-
      </div>
     );
   }

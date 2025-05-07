@@ -1,10 +1,6 @@
 import Image from 'next/image';
-import { useState } from 'react';
 
-export default function SpatialPage() {
-
-  const [responses, setResponses] = useState({});
-
+export default function SpatialPage({selectedTask, responses, setResponses}) {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setResponses((prev) => ({
@@ -41,14 +37,25 @@ export default function SpatialPage() {
          <div className="flex justify-center items-center group flex-col mt-10">
           <p>Type in the painting's corresponding  letter in the appropriate blank slot in the map.</p>
          <div className="relative mt-10">
+         {selectedTask === 'SoulWall' ? (
+           <Image
+           src={'/img/spatialtest.jpg'}
+           alt={`Spatial Test`}
+           width={2000}
+           height={2000}
+           className="w-full h-full object-cover" 
+         />
+          ) : (
             <Image
-              src={'/img/spatialtest.jpg'}
-              alt={`Spatial Test`}
-              width={2000}
-              height={2000}
-              className="w-full h-full object-cover" 
-            />
-             {inputPositions.map((input) => (
+            src={'/img/spatialtest2.jpg'}
+            alt={`Spatial Test`}
+            width={2000}
+            height={2000}
+            className="w-full h-full object-cover" 
+          />
+          )}
+          
+            {inputPositions.map((input) => (
             <input
               key={input.id}
               type="text"
@@ -60,9 +67,6 @@ export default function SpatialPage() {
               className={`absolute transform w-1/65 ${input.top} ${input.ml} text-center text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-900 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600`}
             />
           ))}
-            
-            
-            
           </div>
                        
           </div>

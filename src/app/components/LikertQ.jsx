@@ -1,30 +1,30 @@
-export default function LikertQ({ question, name, onChange, first, last }) {
-    return (
-      <div className="w-full flex flex-col gap-3 border-b-2 border-gray-300 pb-5">
-        <p>{question}</p>
-        <fieldset className="w-full flex flex-row items-center justify-center gap-5">
-          <p>{first}</p>
-          {[1, 2, 3, 4, 5, 6, 7].map((value) => (
-            <div key={value} className="flex flex-row items-center">
-              <input
-                id={`${name}-${value}`}
-                type="radio"
-                name={name}
-                value={value}
-                onChange={onChange}
-                className="w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300"
-              />
-              <label
-                htmlFor={`${name}-${value}`}
-                className="block ms-2 text-sm font-medium text-gray-900"
-              >
-                {value}
-              </label>
-            </div>
-          ))}
-          <p>{last}</p>
-        </fieldset>
-      </div>
-    );
-  }
-  
+export default function LikertQ({ question, name, onChange, first, last, value }) {
+  return (
+    <div className="w-full flex flex-col gap-3 border-b-2 border-gray-300 pb-5">
+      <p>{question}</p>
+      <fieldset className="w-full flex flex-row items-center justify-center gap-5">
+        <p>{first}</p>
+        {[1, 2, 3, 4, 5, 6, 7].map((val) => (
+          <div key={val} className="flex flex-row items-center">
+            <input
+              id={`${name}-${val}`}
+              type="radio"
+              name={name}
+              value={val}
+              checked={String(val) === String(value)}
+              onChange={onChange}
+              className="w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300"
+            />
+            <label
+              htmlFor={`${name}-${val}`}
+              className="block ms-2 text-sm font-medium text-gray-900"
+            >
+              {val}
+            </label>
+          </div>
+        ))}
+        <p>{last}</p>
+      </fieldset>
+    </div>
+  );
+}

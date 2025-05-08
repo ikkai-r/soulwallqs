@@ -46,7 +46,7 @@ export default function VisualPage({selectedTask, responses, setResponses}) {
     { id: 19, src: '/img/14.jpg', alt: 'Map Option 19' },
     { id: 20, src: '/img/35.jpg', alt: 'Map Option 20' },
   ];
-
+  
     return (
       <div className='items-center'>
          <p className='text-xl mb-5 mt-10 font-bold'>Visual</p>

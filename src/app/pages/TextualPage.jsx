@@ -18,7 +18,7 @@ export default function TextualPage({selectedTask, responses, setResponses}) {
   const handleChange = (e, index) => {
     setResponses(prev => ({
       ...prev,
-      [`art${index + 1}`]: e.target.value,
+      [`q${index + 1}`]: e.target.value,
     }));
   };
 
@@ -40,11 +40,11 @@ export default function TextualPage({selectedTask, responses, setResponses}) {
                   />
                   <input
                     type="text"
-                    name={`art${index + 1}`}
-                    id={`art${index + 1}`}
+                    name={`q${index + 1}`}
+                    id={`q${index + 1}`}
                     className="block py-2.5 px-0 w-full mt-2 text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-900 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600"
                     placeholder=""
-                    value={responses[`art${index + 1}`] || ''}
+                    value={responses[`q${index + 1}`] || ''}
                     onChange={(e) => handleChange(e, index)}
                   />
               </div>

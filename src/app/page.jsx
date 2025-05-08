@@ -1,14 +1,14 @@
 'use client';
 import { useState, useEffect } from 'react';
-import DemoPage from './sections/DemoPage';
-import SBPage from './sections/SBPage';
-import NASAPage from './sections/NASAPage';
-import SSQPage from './sections/SSQPage';
-import VisualPage from './sections/VisualPage';
-import SpatialPage from './sections/SpatialPage';
-import TextualPage from './sections/TextualPage';
-import UEQSPage from './sections/UEQSPage';
-import BufferPage from './sections/BufferPage';
+import DemoPage from './pages/DemoPage';
+import SBPage from './pages/SBPage';
+import NASAPage from './pages/NASAPage';
+import SSQPage from './pages/SSQPage';
+import VisualPage from './pages/VisualPage';
+import SpatialPage from './pages/SpatialPage';
+import TextualPage from './pages/TextualPage';
+import UEQSPage from './pages/UEQSPage';
+import BufferPage from './pages/BufferPage';
 
 export default function Home() {
 
@@ -24,12 +24,6 @@ export default function Home() {
   const [currentSection, setCurrentSection] = useState(0);
 
   const [isValid, setIsValid] = useState(false);
-
-  console.log('sbResponses', sbResponses);
-  console.log('ssqResponses', ssqResponses);
-  console.log('ueqsResponses', ueqsResponses);
-  console.log('nasaResponses', nasaResponses);
-
   
   useEffect(() => {
     if (demoResponses.demoTask) {
@@ -171,7 +165,7 @@ export default function Home() {
       nasaResponses,
     };
   
-    await fetch('http://localhost:3001/submit', {
+    await fetch('/api/submit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

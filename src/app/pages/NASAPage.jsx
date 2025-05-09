@@ -3,9 +3,15 @@ import React, { useEffect } from 'react';
 
 export default function NASAPage({responses, setResponses, editable, selectedTask, onValidationChange}) {
 
-    useEffect(() => {
+  useEffect(() => {
     onValidationChange(!!responses['task']);
   }, [responses, onValidationChange]);
+
+  useEffect(() => {
+    if (!editable) {
+      setResponses(prev => ({ ...prev, task: selectedTask }));
+    }
+  }, [editable, selectedTask]);
 
   const handleSliderChange = (e) => {
     setResponses((prev) => ({
@@ -29,7 +35,9 @@ export default function NASAPage({responses, setResponses, editable, selectedTas
                       id="task"
                       name="task"
                       value={selectedTask || ''}
-                      onChange={(e) => editable && setResponses(prev => ({ ...prev, task: e.target.value }))}
+                      onChange={(e) => 
+                        editable && 
+                        setResponses(prev => ({ ...prev, task: e.target.value }))}
                       disabled={!editable}
                       className=" w-full bg-gray-50 border border-0.5 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5"
                     >

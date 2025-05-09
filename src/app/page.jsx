@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import DemoPage from './pages/DemoPage';
 import SBPage from './pages/SBPage';
 import NASAPage from './pages/NASAPage';
@@ -11,14 +11,19 @@ import UEQSPage from './pages/UEQSPage';
 import BufferPage from './pages/BufferPage';
 
 export default function Home() {
-
   const [demoResponses, setDemoResponses] = useState({});
   const [sbResponses, setsbResponses] = useState({});
+
   const [ssqResponses, setSSQResponses] = useState({});
+  const [ssqResponses2, setSSQResponses2] = useState({});
   const [visualResponses, setVisualResponses] = useState([]);
+  const [visualResponses2, setVisualResponses2] = useState([]);
   const [spatialResponses, setSpatialResponses] = useState({});
+  const [spatialResponses2, setSpatialResponses2] = useState({});
   const [textualResponses, setTextualResponses] = useState({});
+  const [textualResponses2, setTextualResponses2] = useState({});
   const [ueqsResponses, setUEQSResponses] = useState({});
+  const [ueqsResponses2, setUEQSResponses2] = useState({});
   const [nasaResponses, setNASAResponses] = useState({});
   const [nasaResponses2, setNASAResponses2] = useState({});
 
@@ -26,21 +31,20 @@ export default function Home() {
 
   const [isValid, setIsValid] = useState(false);
   
-  useEffect(() => {
-    if (nasaResponses.task) {
-      setSSQResponses((prev) => ({ ...prev, selectedTask: nasaResponses.task }));
-      setUEQSResponses((prev) => ({ ...prev, selectedTask: nasaResponses.task }));
-    }
-  }, [nasaResponses.task]);
+  // useEffect(() => {
+  //   if (nasaResponses.task) {
+  //     setSSQResponses((prev) => ({ ...prev, selectedTask: nasaResponses.task }));
+  //     setUEQSResponses((prev) => ({ ...prev, selectedTask: nasaResponses.task }));
+  //   }
+  // }, [nasaResponses.task]);
   
   const getTaskSequence = (iterationIndex) => {
       const isSecond = iterationIndex === 1;
       const selectedTask = nasaResponses.task;
-      console.log('Selected Task:', selectedTask);
-      console.log('Iteration Index:', iterationIndex);
+      // console.log('Selected Task:', selectedTask);
+      // console.log('Iteration Index:', iterationIndex);
       const otherTask = selectedTask === 'SoulWall' ? 'Map' : 'SoulWall';
-      console.log('Other Task:', otherTask);
-
+      // console.log('Other Task:', otherTask);
 
       return [
         {
@@ -64,8 +68,9 @@ export default function Home() {
         {
           component: () => (
             <SSQPage
-              responses={ssqResponses}
-              setResponses={setSSQResponses}
+              responses={isSecond ? ssqResponses2 : ssqResponses}
+              setResponses={isSecond ? setSSQResponses2 : setSSQResponses}
+              selectedTask={isSecond ? otherTask : selectedTask}
               onValidationChange={setIsValid}
             />
           ),
@@ -74,9 +79,9 @@ export default function Home() {
         {
           component: () => (
             <VisualPage
+              responses={isSecond ? visualResponses2 : visualResponses}
+              setResponses={isSecond ? setVisualResponses2 : setVisualResponses}
               selectedTask={isSecond ? otherTask : selectedTask}
-              responses={visualResponses}
-              setResponses={setVisualResponses}
               onValidationChange={setIsValid}
             />
           ),
@@ -85,9 +90,9 @@ export default function Home() {
         {
           component: () => (
             <SpatialPage
+              responses={isSecond ? spatialResponses2 : spatialResponses}
+              setResponses={isSecond ? setSpatialResponses2 : setSpatialResponses}
               selectedTask={isSecond ? otherTask : selectedTask}
-              responses={spatialResponses}
-              setResponses={setSpatialResponses}
               onValidationChange={setIsValid}
             />
           ),
@@ -96,9 +101,9 @@ export default function Home() {
         {
           component: () => (
             <TextualPage
+              responses={isSecond ? textualResponses2 : textualResponses}
+              setResponses={isSecond ? setTextualResponses2 : setTextualResponses}
               selectedTask={isSecond ? otherTask : selectedTask}
-              responses={textualResponses}
-              setResponses={setTextualResponses}
               onValidationChange={setIsValid}
             />
           ),
@@ -107,8 +112,9 @@ export default function Home() {
         {
           component: () => (
             <UEQSPage
-              responses={ueqsResponses}
-              setResponses={setUEQSResponses}
+              responses={isSecond ? ueqsResponses2 : ueqsResponses}
+              setResponses={isSecond ? setUEQSResponses2 : setUEQSResponses}
+              selectedTask={isSecond ? otherTask : selectedTask}
               onValidationChange={setIsValid}
             />
           ),
@@ -173,11 +179,17 @@ export default function Home() {
       demoResponses,
       sbResponses,
       ssqResponses,
+      ssqResponses2,
       visualResponses,
+      visualResponses2,
       spatialResponses,
+      spatialResponses2,
       textualResponses,
+      textualResponses2,
       ueqsResponses,
+      ueqsResponses2,
       nasaResponses,
+      nasaResponses2
     };
   
     await fetch('/api/submit', {

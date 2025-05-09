@@ -35,7 +35,7 @@ export default function SpatialPage({selectedTask, responses, setResponses}) {
     return (
       <div className="flex justify-center items-center w-full">
          <div className="flex justify-center items-center group flex-col mt-10">
-          <p>Type in the painting's corresponding  letter in the appropriate blank slot in the map.</p>
+          <p>Type in the painting's corresponding letter in the appropriate blank slot in the map.</p>
          <div className="relative mt-10">
          {selectedTask === 'SoulWall' ? (
            <Image

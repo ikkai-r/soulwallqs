@@ -20,18 +20,102 @@ export default function Home() {
   const [textualResponses, setTextualResponses] = useState({});
   const [ueqsResponses, setUEQSResponses] = useState({});
   const [nasaResponses, setNASAResponses] = useState({});
+  const [nasaResponses2, setNASAResponses2] = useState({});
 
   const [currentSection, setCurrentSection] = useState(0);
 
   const [isValid, setIsValid] = useState(false);
   
   useEffect(() => {
-    if (demoResponses.demoTask) {
-      setNASAResponses((prev) => ({ ...prev, selectedTask: demoResponses.demoTask }));
-      setSSQResponses((prev) => ({ ...prev, selectedTask: demoResponses.demoTask }));
-      setUEQSResponses((prev) => ({ ...prev, selectedTask: demoResponses.demoTask }));
+    if (nasaResponses.task) {
+      setSSQResponses((prev) => ({ ...prev, selectedTask: nasaResponses.task }));
+      setUEQSResponses((prev) => ({ ...prev, selectedTask: nasaResponses.task }));
     }
-  }, [demoResponses.demoTask]);
+  }, [nasaResponses.task]);
+  
+  const getTaskSequence = (iterationIndex) => {
+      const isSecond = iterationIndex === 1;
+      const selectedTask = nasaResponses.task;
+      console.log('Selected Task:', selectedTask);
+      console.log('Iteration Index:', iterationIndex);
+      const otherTask = selectedTask === 'SoulWall' ? 'Map' : 'SoulWall';
+      console.log('Other Task:', otherTask);
+
+
+      return [
+        {
+          component: () => (
+            <BufferPage text={`Please proceed to perform Task ${iterationIndex + 1} before continuing.`} />
+          ),
+          requiresValidation: false,
+        },
+        {
+          component: () => (
+            <NASAPage
+              responses={isSecond ? nasaResponses2 : nasaResponses}
+              setResponses={isSecond ? setNASAResponses2 : setNASAResponses}
+              selectedTask={isSecond ? otherTask : selectedTask}
+              editable={!isSecond}
+              onValidationChange={setIsValid}
+            />
+          ),
+          requiresValidation: false,
+        },
+        {
+          component: () => (
+            <SSQPage
+              responses={ssqResponses}
+              setResponses={setSSQResponses}
+              onValidationChange={setIsValid}
+            />
+          ),
+          requiresValidation: false,
+        },
+        {
+          component: () => (
+            <VisualPage
+              selectedTask={isSecond ? otherTask : selectedTask}
+              responses={visualResponses}
+              setResponses={setVisualResponses}
+              onValidationChange={setIsValid}
+            />
+          ),
+          requiresValidation: false,
+        },
+        {
+          component: () => (
+            <SpatialPage
+              selectedTask={isSecond ? otherTask : selectedTask}
+              responses={spatialResponses}
+              setResponses={setSpatialResponses}
+              onValidationChange={setIsValid}
+            />
+          ),
+          requiresValidation: false,
+        },
+        {
+          component: () => (
+            <TextualPage
+              selectedTask={isSecond ? otherTask : selectedTask}
+              responses={textualResponses}
+              setResponses={setTextualResponses}
+              onValidationChange={setIsValid}
+            />
+          ),
+          requiresValidation: false,
+        },
+        {
+          component: () => (
+            <UEQSPage
+              responses={ueqsResponses}
+              setResponses={setUEQSResponses}
+              onValidationChange={setIsValid}
+            />
+          ),
+          requiresValidation: false,
+        },
+      ];
+    };
 
 
 //TODO: Change the requiresValidation to true after testing
@@ -58,76 +142,7 @@ export default function Home() {
       ), 
       requiresValidation: false 
     },
-    { 
-      component: (props) => (
-        <VisualPage 
-          selectedTask={demoResponses.demoTask}
-          responses={visualResponses}
-          setResponses={setVisualResponses}
-          onValidationChange={setIsValid}
-          {...props}
-        />
-      ), 
-      requiresValidation: false 
-    },
-    { 
-      component: (props) => (
-        <SpatialPage 
-          selectedTask={demoResponses.demoTask}
-          responses={spatialResponses}
-          setResponses={setSpatialResponses}
-          onValidationChange={setIsValid}
-          {...props}
-        />
-      ), 
-      requiresValidation: false 
-    },
-    { 
-      component: (props) => (
-        <TextualPage 
-          selectedTask={demoResponses.demoTask}
-          responses={textualResponses}
-          setResponses={setTextualResponses}
-          onValidationChange={setIsValid}
-          {...props}
-        />
-      ), 
-      requiresValidation: false 
-    },
-    
-    { 
-      component: (props) => (
-        <NASAPage 
-          responses={nasaResponses}
-          setResponses={setNASAResponses}
-          onValidationChange={setIsValid}
-          {...props}
-        />
-      ), 
-      requiresValidation: false 
-    },
-    { 
-      component: (props) => (
-        <SSQPage 
-          responses={ssqResponses}
-          setResponses={setSSQResponses}
-          onValidationChange={setIsValid}
-          {...props}
-        />
-      ), 
-      requiresValidation: false 
-    },
-    { 
-      component: (props) => (
-        <UEQSPage 
-          responses={ueqsResponses}
-          setResponses={setUEQSResponses}
-          onValidationChange={setIsValid}
-          {...props}
-        />
-      ), 
-      requiresValidation: false 
-    },
+     ...[0, 1].flatMap(i => getTaskSequence(i)),
     { 
       component: (props) => (
         <BufferPage
@@ -201,7 +216,7 @@ export default function Home() {
           {currentSection === sections.length - 2 && (
             <button
               onClick={handleSave}
-              className="fixed bottom-10 right-10 px-10 py-5 bg-black text-white rounded text-xl cursor-pointer"
+              className="fixed bottom-10 right-10 px-10 py-5 bg-emerald-700 text-white rounded text-xl cursor-pointer"
             >
               Submit
             </button>

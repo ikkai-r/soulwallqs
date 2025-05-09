@@ -24,14 +24,6 @@ export default function DemoPage({ onValidationChange, responses, setResponses }
               <input type="number" onChange={handleChange} id="age" name="age" value={responses.age || ''} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "/>
           </div>
           <div className="w-full">
-          <label htmlFor="demoTask" className="block mb-2 text-sm font-medium text-gray-900 ">Task</label>
-            <select id="demoTask" name="demoTask" value={responses.demoTask || ''} onChange={handleChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 font-[var(--font-geist-sans)]">
-              <option disabled value="">Select your task</option>
-              <option>SoulWall</option>
-              <option>Map</option>
-            </select>
-          </div>
-          <div className="w-full">
           <label htmlFor="sex" className="block mb-2 text-sm font-medium text-gray-900 ">Sex</label>
             <select id="sex" name="sex" value={responses.sex || ''} onChange={handleChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 font-[var(--font-geist-sans)]">
               <option disabled value="">Select your sex</option>

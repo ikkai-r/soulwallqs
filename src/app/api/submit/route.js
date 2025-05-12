@@ -1,189 +1,4 @@
-// import pool from '../../lib/database/postgres';
-import sqlite3 from 'sqlite3';
-import { v4 as uuidv4 } from 'uuid';
-
-const db = new sqlite3.Database(
-  './responses.db',
-  sqlite3.OPEN_READWRITE, // Only open if it exists
-  (err) => {
-    if (err) {
-      console.error('Database does not exist or cannot be opened:', err.message);
-      process.exit(1); // or handle it gracefully
-    } else {
-      console.log('Connected to existing database.');
-    }
-  }
-);
-
-// Creating db
-// const db = new sqlite3.Database('./responses.db');
-
-// db.run(`CREATE TABLE IF NOT EXISTS demoResponses (
-//   id INTEGER PRIMARY KEY AUTOINCREMENT,
-//   pid TEXT,
-//   age TEXT, 
-//   sex TEXT,
-//   hand TEXT,
-//   vr TEXT
-// )`);
-
-// db.run(`CREATE TABLE IF NOT EXISTS sbResponses (
-//   id INTEGER PRIMARY KEY AUTOINCREMENT,
-//   pid TEXT,
-//   q1 TEXT,
-//   q2 TEXT,
-//   q3 TEXT,
-//   q4 TEXT,
-//   q5 TEXT,
-//   q6 TEXT,
-//   q7 TEXT,
-//   q8 TEXT,
-//   q9 TEXT,
-//   q10 TEXT,
-//   q11 TEXT,
-//   q12 TEXT,
-//   q13 TEXT,
-//   q14 TEXT,
-//   q15 TEXT
-// );`);
-
-// db.run(`CREATE TABLE IF NOT EXISTS visualResponses (
-//   id INTEGER PRIMARY KEY AUTOINCREMENT,
-//   pid TEXT,
-//   ordr TEXT,
-//   task TEXT,
-//   selectedIds TEXT
-// );`);
-
-// db.run(`CREATE TABLE IF NOT EXISTS spatialResponses (
-//   id INTEGER PRIMARY KEY AUTOINCREMENT,
-//   pid TEXT,
-//   ordr TEXT,
-//   task TEXT,
-//   q1 TEXT,
-//   q2 TEXT,
-//   q3 TEXT,
-//   q4 TEXT,
-//   q5 TEXT,
-//   q6 TEXT,
-//   q7 TEXT,
-//   q8 TEXT,
-//   q9 TEXT,
-//   q10 TEXT,
-//   q11 TEXT,
-//   q12 TEXT,
-//   q13 TEXT,
-//   q14 TEXT,
-//   q15 TEXT,
-//   q16 TEXT
-// );`);
-
-// db.run(`CREATE TABLE IF NOT EXISTS ueqsResponses (
-//   id INTEGER PRIMARY KEY AUTOINCREMENT,
-//   pid TEXT,
-//   ordr TEXT,
-//   task TEXT,
-//   q1 TEXT,
-//   q2 TEXT,
-//   q3 TEXT,
-//   q4 TEXT,
-//   q5 TEXT,
-//   q6 TEXT,
-//   q7 TEXT,
-//   q8 TEXT
-// );`);
-
-// db.run(`CREATE TABLE IF NOT EXISTS nasaResponses (
-//   id INTEGER PRIMARY KEY AUTOINCREMENT,
-//   pid TEXT,
-//   ordr TEXT,
-//   task TEXT,
-//   mentalDemand TEXT,
-//   physicalDemand TEXT,
-//   temporalDemand TEXT,
-//   performance TEXT,
-//   effort TEXT,
-//   frustration TEXT
-// );`);
-
-
-// db.run(`CREATE TABLE IF NOT EXISTS ssqResponses (
-//   id INTEGER PRIMARY KEY AUTOINCREMENT,
-//   pid TEXT,
-//   ordr TEXT,
-//   task TEXT,
-//   q1 TEXT,
-//   q2 TEXT,
-//   q3 TEXT,
-//   q4 TEXT,
-//   q5 TEXT,
-//   q6 TEXT,
-//   q7 TEXT,
-//   q8 TEXT,
-//   q9 TEXT,
-//   q10 TEXT,
-//   q11 TEXT,
-//   q12 TEXT,
-//   q13 TEXT,
-//   q14 TEXT,
-//   q15 TEXT,
-//   q16 TEXT
-// );`);
-
-// db.run(`CREATE TABLE IF NOT EXISTS spatialResponses (
-//   id INTEGER PRIMARY KEY AUTOINCREMENT,
-//   pid TEXT,
-//   ordr TEXT,
-//   task TEXT,
-//   q1 TEXT,
-//   q2 TEXT,
-//   q3 TEXT,
-//   q4 TEXT,
-//   q5 TEXT,
-//   q6 TEXT,
-//   q7 TEXT,
-//   q8 TEXT,
-//   q9 TEXT,
-//   q10 TEXT,
-//   q11 TEXT,
-//   q12 TEXT,
-//   q13 TEXT,
-//   q14 TEXT,
-//   q15 TEXT,
-//   q16 TEXT,
-//   q17 TEXT,
-//   q18 TEXT,
-//   q19 TEXT,
-//   q20 TEXT
-// );`);
-
-// db.run(`CREATE TABLE IF NOT EXISTS textualResponses (
-//   id INTEGER PRIMARY KEY AUTOINCREMENT,
-//   pid TEXT,
-//   ordr TEXT,
-//   task TEXT,
-//   q1 TEXT,
-//   q2 TEXT,
-//   q3 TEXT,
-//   q4 TEXT,
-//   q5 TEXT,
-//   q6 TEXT,
-//   q7 TEXT,
-//   q8 TEXT,
-//   q9 TEXT,
-//   q10 TEXT,
-//   q11 TEXT,
-//   q12 TEXT,
-//   q13 TEXT,
-//   q14 TEXT,
-//   q15 TEXT,
-//   q16 TEXT,
-//   q17 TEXT,
-//   q18 TEXT,
-//   q19 TEXT,
-//   q20 TEXT
-// );`);
-
+import pool from '../../lib/database/postgres';
 
 // Handle POST request
 export async function POST(request) {
@@ -246,10 +61,29 @@ export async function POST(request) {
     );
 
     // Visual
+    let visualScore = 0;
+    if (task === 'SoulWall') {
+      const correctIds = [1, 5, 9, 10, 11, 12, 13, 14, 16, 19]
+
+      visualScore = correctIds.reduce(
+        (acc, id) => acc + (visual.includes(id) ? 1 : 0),
+        0
+      );
+      console.log('visual score sw', visualScore);
+    } else {
+      const correctIds = [1, 2, 3, 5, 6, 8, 10, 12, 15, 18]
+      visualScore = correctIds.reduce(
+        (acc, id) => acc + (visual.includes(id) ? 1 : 0),
+        0
+      );
+      console.log('visual score ct', visualScore);
+    }
+
     db.run(
-      `INSERT INTO visualResponses (pid, ordr, task, selectedIds) VALUES (?, ?, ?, ?)`,
-      [pid, order, task, visual.join(', ')]
+      `INSERT INTO visualResponses (pid, ordr, task, selectedIds, score) VALUES (?, ?, ?, ?, ?)`,
+      [pid, order, task, visual.join(', '), visualScore]
     );
+   
 
     // Spatial
     insertGenericResponses('spatialResponses', 20, spatial, pid, order, task, true);
@@ -279,10 +113,24 @@ function insertGenericResponses(table, count, data, pid, order = null, task = nu
     values.push(order, task);
   }
 
-  // if (score !== null) {
-  //   columns.push('score');
-  //   values.push(score);
-  // }
+  if(table == 'spatialResponses') {
+    let userAnswers = data;
+    let correctAnswers = [];
+    if (task == 'SoulWall') { 
+       correctAnswers = ['t', 's', 'a', 'n', 'o', 'm', 'p', 'c', 'f', 'i', 'r', 'g', 'j', 'l', 'e', 'k', 'q', 'b', 'h', 'd'];
+    } else {
+      correctAnswers = ['i', 'j', 'm', 'a', 'b', 'e', 'f', 'o', 'r', 's', 'g', 'p', 'q', 'c', 'n', 'd', 'h', 'k', 't', 'l'];
+    }
+
+    let score = Object.entries(userAnswers).reduce((acc, [key, val]) => {
+      return acc + (val.toLowerCase() === correctAnswers[+key - 1].toLowerCase() ? 1 : 0);
+    }, 0);
+    
+    columns.push('score');
+    values.push(score);
+
+    console.log('spatial score', task, score);
+  }
 
   // Add response values
   keys.forEach(k => {
@@ -296,6 +144,3 @@ function insertGenericResponses(table, count, data, pid, order = null, task = nu
 
   db.run(sql, values);
 }
-
-// TODO: 
-//generatescore....

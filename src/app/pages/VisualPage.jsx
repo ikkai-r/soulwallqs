@@ -20,7 +20,7 @@ export default function VisualPage({selectedTask, responses, setResponses}) {
     { id: 16, src: '/img/13.jpg', alt: 'Option 16' },
     { id: 17, src: '/img/37.jpg', alt: 'Option 17' },
     { id: 18, src: '/img/42.png', alt: 'Option 18' },
-    { id: 19, src: '/img/28.jpg', alt: 'Option 19' },
+    { id: 19, src: '/img/14.jpg', alt: 'Option 19' },
     { id: 20, src: '/img/34.jpg', alt: 'Option 20' },
   ];
 
@@ -43,7 +43,7 @@ export default function VisualPage({selectedTask, responses, setResponses}) {
     { id: 16, src: '/img/31.jpg', alt: 'Map Option 16' },
     { id: 17, src: '/img/24.jpg', alt: 'Map Option 17' },
     { id: 18, src: '/img/10.png', alt: 'Map Option 18' },
-    { id: 19, src: '/img/14.jpg', alt: 'Map Option 19' },
+    { id: 19, src: '/img/28.jpg', alt: 'Map Option 19' },
     { id: 20, src: '/img/35.jpg', alt: 'Map Option 20' },
   ];
   

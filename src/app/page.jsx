@@ -31,20 +31,10 @@ export default function Home() {
 
   const [isValid, setIsValid] = useState(false);
   
-  // useEffect(() => {
-  //   if (nasaResponses.task) {
-  //     setSSQResponses((prev) => ({ ...prev, selectedTask: nasaResponses.task }));
-  //     setUEQSResponses((prev) => ({ ...prev, selectedTask: nasaResponses.task }));
-  //   }
-  // }, [nasaResponses.task]);
-  
   const getTaskSequence = (iterationIndex) => {
       const isSecond = iterationIndex === 1;
       const selectedTask = nasaResponses.task;
-      // console.log('Selected Task:', selectedTask);
-      // console.log('Iteration Index:', iterationIndex);
       const otherTask = selectedTask === 'SoulWall' ? 'Map' : 'SoulWall';
-      // console.log('Other Task:', otherTask);
 
       return [
         {
@@ -192,13 +182,25 @@ export default function Home() {
       nasaResponses2
     };
   
-    await fetch('/api/submit', {
+    try {
+    const response = await fetch('/api/submit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        data: allData  
+        data: allData,
       }),
     });
+
+    if (response.status === 200) {
+      alert(result.message || 'Data submitted successfully!');
+      setCurrentSection(sections.length - 1);
+    } else {
+      alert(`Error: ${result.error || 'Something went wrong!'}`);
+    }
+  } catch (error) {
+    alert(`Error: ${error.message || 'Failed to submit data!'}`);
+  }
+
   };
 
   return (

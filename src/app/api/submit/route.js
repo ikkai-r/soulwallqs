@@ -152,7 +152,39 @@ async function insertGenericResponses(table, count, data, pid, order = null, tas
     values.push(sbMean, sbCategory);
 
     console.log('SB Mean:', sbMean.toFixed(2));
-  } 
+  }  else if (table == 'ssqResponses') {
+      const ssqWeights = {
+        nausea: ['q1', 'q2', 'q6', 'q7', 'q8', 'q9', 'q15', 'q16', 'q10'],
+        oculomotor: ['q1', 'q2', 'q3', 'q4', 'q5', 'q9', 'q11'],
+        disorientation: ['q5', 'q7', 'q8', 'q9', 'q10', 'q11', 'q12', 'q13', 'q14']
+      };
+
+      const valueToNumber = (value) => {
+        const mapping = {
+          'None': 0,
+          'Slight': 1,
+          'Moderate': 2,
+          'Severe': 3
+        };
+
+        return mapping[value] || 0; // default to 0 if value is not recognized
+      };
+
+      const toNumber = (key) => valueToNumber(data[key]);
+      
+      const nauseaSum = ssqWeights.nausea.reduce((sum, key) => sum + toNumber(key), 0);
+      const oculomotorSum = ssqWeights.oculomotor.reduce((sum, key) => sum + toNumber(key), 0);
+      const disorientationSum = ssqWeights.disorientation.reduce((sum, key) => sum + toNumber(key), 0);
+      const totalSum = Object.keys(data).reduce((sum, key) => sum + toNumber(key), 0);
+
+      const nauseaScore =  (nauseaSum / 9) * 9.54;
+      const oculomotorScore =  (oculomotorSum / 7) * 7.58;
+      const disorientationScore =  (disorientationSum / 7) * 13.92;
+      const totalScore =  (totalSum / 16) * 3.74;
+          
+      columns.push('nscore', 'oscore', 'dscore', 'totalscore');
+      values.push(nauseaScore, oculomotorScore, disorientationScore, totalScore);
+  }
 
   // Add response values
   keys.forEach(k => {

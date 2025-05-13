@@ -192,15 +192,15 @@ export default function Home() {
     });
 
     if (response.status === 200) {
-      alert(result.message || 'Data submitted successfully!');
+
+      alert('Data submitted successfully!');
       setCurrentSection(sections.length - 1);
     } else {
-      alert(`Error: ${result.error || 'Something went wrong!'}`);
+      alert(`Error: 'Something went wrong!'}`);
     }
   } catch (error) {
     alert(`Error: ${error.message || 'Failed to submit data!'}`);
   }
-
   };
 
   return (

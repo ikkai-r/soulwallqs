@@ -127,25 +127,32 @@ async function insertGenericResponses(table, count, data, pid, order = null, tas
     }, 0);
     let spatialPt = score / 20;
     
-    columns.push('score');
-    values.push(score);
-    columns.push('pt');
-    values.push(spatialPt);
+    columns.push('score', 'pt');
+    values.push(score, spatialPt);
 
     console.log('spatial score', task, score);
   } else if (table == 'ueqsResponses') {
-    const pragmaticItems = ['q1', 'q2', 'q3', 'q4'];
-    const hedonicItems = ['q5', 'q6', 'q7', 'q8'];
-
-    const pragmaticMean = calculateMean(data, pragmaticItems);
-    const hedonicMean = calculateMean(data, hedonicItems);
+    const pragmaticMean = calculateMeanRange(data, 1, 4);
+    const hedonicMean = calculateMeanRange(data, 5, 8); 
 
     columns.push('pMean', 'hMean');
     values.push(pragmaticMean, hedonicMean);
 
     console.log('Pragmatic Quality Mean:', pragmaticMean.toFixed(2));
     console.log('Hedonic Quality Mean:', hedonicMean.toFixed(2));
-  }
+  } else if (table == 'sbResponses') {
+      const sbMean = calculateMeanRange(data, 1, 15);
+      let sbCategory = "Poor"
+
+      if (sbMean > 4) {
+        sbCategory = "Good"
+      }
+
+    columns.push('mean', 'category');
+    values.push(sbMean, sbCategory);
+
+    console.log('SB Mean:', sbMean.toFixed(2));
+  } 
 
   // Add response values
   keys.forEach(k => {
@@ -160,7 +167,17 @@ async function insertGenericResponses(table, count, data, pid, order = null, tas
   await pool.query(sql, values);
 }
 
-function calculateMean(responses, keys) {
-  const total = keys.reduce((sum, key) => sum + Number(responses[key]), 0);
-  return total / keys.length;
+function calculateMeanRange(responses, start, end) {
+  let total = 0;
+  let count = 0;
+
+  for (let i = start; i <= end; i++) {
+    const key = `q${i}`;
+    if (responses[key] !== undefined) {
+      total += Number(responses[key]);
+      count++;
+    }
+  }
+
+  return count > 0 ? total / count : 0;
 }

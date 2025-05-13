@@ -133,6 +133,18 @@ async function insertGenericResponses(table, count, data, pid, order = null, tas
     values.push(spatialPt);
 
     console.log('spatial score', task, score);
+  } else if (table == 'ueqsResponses') {
+    const pragmaticItems = ['q1', 'q2', 'q3', 'q4'];
+    const hedonicItems = ['q5', 'q6', 'q7', 'q8'];
+
+    const pragmaticMean = calculateMean(data, pragmaticItems);
+    const hedonicMean = calculateMean(data, hedonicItems);
+
+    columns.push('pMean', 'hMean');
+    values.push(pragmaticMean, hedonicMean);
+
+    console.log('Pragmatic Quality Mean:', pragmaticMean.toFixed(2));
+    console.log('Hedonic Quality Mean:', hedonicMean.toFixed(2));
   }
 
   // Add response values
@@ -146,4 +158,9 @@ async function insertGenericResponses(table, count, data, pid, order = null, tas
   const sql = `INSERT INTO ${table} (${columns.join(', ')}) VALUES (${placeholders})`;
 
   await pool.query(sql, values);
+}
+
+function calculateMean(responses, keys) {
+  const total = keys.reduce((sum, key) => sum + Number(responses[key]), 0);
+  return total / keys.length;
 }

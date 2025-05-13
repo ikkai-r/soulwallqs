@@ -64,6 +64,7 @@ export async function POST(request) {
 
     // Visual
     let visualScore = 0;
+    let visualPt = 0;
     if (task === 'SoulWall') {
       const correctIds = [1, 5, 9, 10, 11, 12, 13, 14, 16, 19]
 
@@ -81,9 +82,10 @@ export async function POST(request) {
       console.log('visual score ct', visualScore);
     }
 
+    visualPt = visualScore / 10;
     await pool.query(
-      `INSERT INTO visualResponses (pid, ordr, task, selectedIds, score) VALUES ($1, $2, $3, $4, $5)`,
-      [pid, order, task, visual.join(', '), visualScore]
+      `INSERT INTO visualResponses (pid, ordr, task, selectedIds, score, pt) VALUES ($1, $2, $3, $4, $5, $6)`,
+      [pid, order, task, visual.join(', '), visualScore, visualPt]
     );
    
     // Spatial
@@ -123,9 +125,12 @@ async function insertGenericResponses(table, count, data, pid, order = null, tas
     let score = Object.entries(userAnswers).reduce((acc, [key, val]) => {
       return acc + (val.toLowerCase() === correctAnswers[+key - 1].toLowerCase() ? 1 : 0);
     }, 0);
+    let spatialPt = score / 20;
     
     columns.push('score');
     values.push(score);
+    columns.push('pt');
+    values.push(spatialPt);
 
     console.log('spatial score', task, score);
   }

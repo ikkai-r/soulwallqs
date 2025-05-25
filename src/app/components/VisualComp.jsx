@@ -3,14 +3,21 @@ import Image from 'next/image';
 
 
 const VisualComp = ({ imageOptions, responses, setResponses }) => {
-  const handleCheckboxChange = (id) => {
-    setResponses(prev => {
-      const updated = prev.includes(id)
-        ? prev.filter(item => item !== id) // uncheck
-        : [...prev, id]; // check
-      return updated;
-    });
-  };
+  
+ const handleCheckboxChange = (id) => {
+  setResponses(prev => {
+    const selectedIds = prev?.selectedIds || [];
+    const updatedSelected = selectedIds.includes(id)
+      ? selectedIds.filter(item => item !== id)
+      : [...selectedIds, id];
+
+    return {
+      ...prev,
+      selectedIds: updatedSelected,
+    };
+  });
+};
+
 
   return (
     <fieldset>
@@ -21,7 +28,7 @@ const VisualComp = ({ imageOptions, responses, setResponses }) => {
               id={`checkbox-${id}`}
               type="checkbox"
               className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500"
-              checked={responses.includes(id)}
+              checked={responses.selectedIds?.includes(id) || false}
               onChange={() => handleCheckboxChange(id)}
             />
             <Image

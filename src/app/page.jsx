@@ -16,8 +16,8 @@ export default function Home() {
 
   const [ssqResponses, setSSQResponses] = useState({});
   const [ssqResponses2, setSSQResponses2] = useState({});
-  const [visualResponses, setVisualResponses] = useState([]);
-  const [visualResponses2, setVisualResponses2] = useState([]);
+  const [visualResponses, setVisualResponses] = useState({});
+  const [visualResponses2, setVisualResponses2] = useState({});
   const [spatialResponses, setSpatialResponses] = useState({});
   const [spatialResponses2, setSpatialResponses2] = useState({});
   const [textualResponses, setTextualResponses] = useState({});
@@ -26,11 +26,12 @@ export default function Home() {
   const [ueqsResponses2, setUEQSResponses2] = useState({});
   const [nasaResponses, setNASAResponses] = useState({});
   const [nasaResponses2, setNASAResponses2] = useState({});
+  const [entryTime, setEntryTime] = useState(null);
 
   const [currentSection, setCurrentSection] = useState(0);
 
   const [isValid, setIsValid] = useState(false);
-  
+
   const getTaskSequence = (iterationIndex) => {
       const isSecond = iterationIndex === 1;
       const selectedTask = nasaResponses.task;
@@ -53,7 +54,7 @@ export default function Home() {
               onValidationChange={setIsValid}
             />
           ),
-          requiresValidation: false,
+          requiresValidation: true,
         },
         {
           component: () => (
@@ -64,7 +65,7 @@ export default function Home() {
               onValidationChange={setIsValid}
             />
           ),
-          requiresValidation: false,
+          requiresValidation: true,
         },
         {
           component: () => (
@@ -72,10 +73,11 @@ export default function Home() {
               responses={isSecond ? visualResponses2 : visualResponses}
               setResponses={isSecond ? setVisualResponses2 : setVisualResponses}
               selectedTask={isSecond ? otherTask : selectedTask}
-              onValidationChange={setIsValid}
-            />
+              setEntryTime={setEntryTime}
+                          />
           ),
           requiresValidation: false,
+          name: isSecond ? "VisualPage2" : "VisualPage",
         },
         {
           component: () => (
@@ -83,10 +85,11 @@ export default function Home() {
               responses={isSecond ? spatialResponses2 : spatialResponses}
               setResponses={isSecond ? setSpatialResponses2 : setSpatialResponses}
               selectedTask={isSecond ? otherTask : selectedTask}
-              onValidationChange={setIsValid}
+              setEntryTime={setEntryTime}
             />
           ),
           requiresValidation: false,
+          name: isSecond ? "SpatialPage2" : "SpatialPage",
         },
         {
           component: () => (
@@ -94,10 +97,11 @@ export default function Home() {
               responses={isSecond ? textualResponses2 : textualResponses}
               setResponses={isSecond ? setTextualResponses2 : setTextualResponses}
               selectedTask={isSecond ? otherTask : selectedTask}
-              onValidationChange={setIsValid}
-            />
+              setEntryTime={setEntryTime}
+                          />
           ),
           requiresValidation: false,
+          name: isSecond ? "TextualPage2" : "TextualPage",
         },
         {
           component: () => (
@@ -108,13 +112,11 @@ export default function Home() {
               onValidationChange={setIsValid}
             />
           ),
-          requiresValidation: false,
+          requiresValidation: true,
         },
       ];
     };
 
-
-//TODO: Change the requiresValidation to true after testing
   const sections = [
     { 
       component: (props) => (
@@ -125,7 +127,7 @@ export default function Home() {
           {...props}
         />
       ), 
-      requiresValidation: false 
+      requiresValidation: true 
     },
     { 
       component: (props) => (
@@ -136,7 +138,7 @@ export default function Home() {
           {...props}
         />
       ), 
-      requiresValidation: false 
+      requiresValidation: false,
     },
      ...[0, 1].flatMap(i => getTaskSequence(i)),
     { 
@@ -150,19 +152,60 @@ export default function Home() {
   ];
 
   const handleNext = () => {
+
+    const now = Date.now();
+    const duration = entryTime ? Math.floor((now - entryTime) / 1000) : 0;
+
     const current = sections[currentSection];
 
     if (current.requiresValidation && !isValid) {
       alert('Please complete all required fields before continuing.');
       return;
     }
-    
+
+    if (current.name === "VisualPage") {
+      setVisualResponses(prev => ({
+          ...prev,
+          timesecs: duration,
+        }));
+    } else if (current.name === "SpatialPage") {
+      setSpatialResponses(prev => ({
+          ...prev,
+          timesecs: duration,
+        }));
+    } else if (current.name === "TextualPage") {
+      setTextualResponses(prev => ({
+          ...prev,
+          timesecs: duration,
+        }));
+    } else if (current.name === "VisualPage2") {  
+      setVisualResponses2(prev => ({
+          ...prev,
+          timesecs: duration,
+        }));
+    } else if (current.name === "SpatialPage2") {
+      setSpatialResponses2(prev => ({
+          ...prev,
+          timesecs: duration,
+        }));
+    } else if (current.name === "TextualPage2") {  
+      setTextualResponses2(prev => ({
+          ...prev,
+          timesecs: duration,
+        }));
+    }
+
+    setEntryTime(null);
     setCurrentSection((prev) => prev + 1);
   };
 
-  const handlePrevious = () => {
+  /**
+   * 
+   *   const handlePrevious = () => {
     setCurrentSection((prev) => prev - 1);
   };
+   */
+
 
   const handleSave = async () => {
     const allData = {
@@ -196,7 +239,7 @@ export default function Home() {
       alert('Data submitted successfully!');
       setCurrentSection(sections.length - 1);
     } else {
-      alert(`Error: 'Something went wrong!'}`);
+      alert(`Error: 'Something went wrong!'`);
     }
   } catch (error) {
     alert(`Error: ${error.message || 'Failed to submit data!'}`);
@@ -217,7 +260,7 @@ export default function Home() {
               Next
             </button>
           )}
-
+{/* 
           {currentSection > 0 && (
             <button
               onClick={handlePrevious}
@@ -225,7 +268,7 @@ export default function Home() {
             >
               Previous
             </button>
-          )}
+          )} */}
 
           {currentSection === sections.length - 2 && (
             <button

@@ -1,21 +1,22 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import SSQ from "../components/SSQ";
 export default function SSQPage({ onValidationChange, responses, setResponses }) {
-   
      const requiredFields = Array.from({ length: 16 }, (_, i) => `q${i + 1}`);
-   
-     const handleChange = (e) => {
-       setResponses({
-         ...responses,
-         [e.target.name]: e.target.value,
-       });
-     };
-   
-     useEffect(() => {
-       const allFilled = requiredFields.every((field) => responses[field] && responses[field] !== "");
-       onValidationChange(allFilled); 
-     }, [responses, onValidationChange]);
+
+  const handleChange = (e) => {
+    setResponses({
+      ...responses,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  useEffect(() => {
+      const allFilled = requiredFields.every((field) => responses[field] && responses[field] !== "");
+      onValidationChange(allFilled);
+    }, [responses, onValidationChange, requiredFields]);
+
+
    
        return (
          <div className="flex flex-col items-center min-h-screen p-10 gap-16 font-[family-name:var(--font-geist-sans)] w-full ">

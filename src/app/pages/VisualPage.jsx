@@ -1,6 +1,14 @@
+import React, { useEffect } from 'react';
 import VisualComp from "../components/VisualComp";
 
-export default function VisualPage({selectedTask, responses, setResponses}) {
+export default function VisualPage({selectedTask, responses, setResponses, setEntryTime}) {
+
+   useEffect(() => {
+    if (setEntryTime) {
+      setEntryTime(Date.now());
+    }
+  }, [setEntryTime]);
+
   const soulWallImgs = [
     { id: 1, src: '/img/1.png', alt: 'Option 1' },
     { id: 2, src: '/img/23.png', alt: 'Option 2' },

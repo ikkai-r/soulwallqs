@@ -1,6 +1,7 @@
+import React, { useEffect } from 'react';
 import Image from 'next/image';
 
-export default function TextualPage({selectedTask, responses, setResponses}) {
+export default function TextualPage({selectedTask, responses, setResponses, setEntryTime}) {
   const imageList = [
     '1.png', '2.png', '3.png', '4.png', '5.png',
     '6.png', '7.png', '8.png', '9.png', '10.png',
@@ -22,6 +23,10 @@ export default function TextualPage({selectedTask, responses, setResponses}) {
     }));
   };
 
+    useEffect(() => {
+    setEntryTime?.(Date.now()); 
+  }, [setEntryTime]);
+
     return (
       <div className="flex flex-col items-center min-h-screen p-10 gap-12 font-[family-name:var(--font-geist-sans)] w-full">
 
@@ -40,6 +45,7 @@ export default function TextualPage({selectedTask, responses, setResponses}) {
                   />
                   <input
                     type="text"
+                    autoComplete="off"
                     name={`q${index + 1}`}
                     id={`q${index + 1}`}
                     className="block py-2.5 px-0 w-full mt-2 text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-900 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600"

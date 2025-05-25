@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import LikertQ from "../components/LikertQ";
 
 export default function UEQSPage({ onValidationChange, responses, setResponses}) {
   const requiredFields = Array.from({ length: 8 }, (_, i) => `q${i + 1}`);
-
+ 
   const handleChange = (e) => {
     setResponses({
       ...responses,
@@ -12,9 +12,11 @@ export default function UEQSPage({ onValidationChange, responses, setResponses})
   };
 
   useEffect(() => {
-    const allFilled = requiredFields.every((field) => responses[field] && responses[field] !== "");
-    onValidationChange(allFilled); 
-  }, [responses, onValidationChange]);
+      const allFilled = requiredFields.every((field) => responses[field] && responses[field] !== "");
+      onValidationChange(allFilled);
+    }, [responses, onValidationChange, requiredFields]);
+
+
 
     return (
       <div className="flex flex-col items-center min-h-screen p-10 gap-16 font-[family-name:var(--font-geist-sans)] w-full ">

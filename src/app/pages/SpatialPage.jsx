@@ -1,6 +1,7 @@
+import React, { useEffect } from 'react';
 import Image from 'next/image';
 
-export default function SpatialPage({selectedTask, responses, setResponses}) {
+export default function SpatialPage({selectedTask, responses, setResponses, setEntryTime}) {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setResponses((prev) => ({
@@ -8,6 +9,11 @@ export default function SpatialPage({selectedTask, responses, setResponses}) {
       [name]: value,
     }));
   };
+
+    useEffect(() => {
+      setEntryTime?.(Date.now()); 
+    }, [setEntryTime]);
+  
 
   const inputPositions = [
     { id: '1', top: 'top-80', ml: 'ml-119.5' },
@@ -59,6 +65,7 @@ export default function SpatialPage({selectedTask, responses, setResponses}) {
             <input
               key={input.id}
               type="text"
+              autoComplete="off"
               name={input.id}
               id={input.id}
               maxLength={1}

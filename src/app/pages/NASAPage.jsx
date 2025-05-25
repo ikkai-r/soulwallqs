@@ -1,11 +1,22 @@
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 export default function NASAPage({responses, setResponses, editable, selectedTask, onValidationChange}) {
 
+  const requiredFields = ['task', 'mentalDemand', 'physicalDemand', 'temporalDemand', 'performance', 'effort', 'frustration'];
+  const startTimeRef = useRef(Date.now());
+  const timeRecordedRef = useRef(false);
+
   useEffect(() => {
-    onValidationChange(!!responses['task']);
-  }, [responses, onValidationChange]);
+      const allFilled = requiredFields.every((field) => responses[field] && responses[field] !== "");
+      onValidationChange(allFilled);
+
+      if (allFilled && !timeRecordedRef.current) {
+        const elapsedSeconds = Math.floor((Date.now() - startTimeRef.current) / 1000);
+        setResponses(prev => ({ ...prev, timesecs: elapsedSeconds }));
+        timeRecordedRef.current = true;  // prevent recording time again
+      }
+    }, [responses, onValidationChange, requiredFields, setResponses]);
 
   useEffect(() => {
     if (!editable) {
@@ -61,7 +72,7 @@ export default function NASAPage({responses, setResponses, editable, selectedTas
                 name="mentalDemand"
                 min="0"
                 max="100"
-                step="1"
+                step="5"
                 value={responses.mentalDemand || ''}
                 onChange={handleSliderChange}
                 className="w-full"
@@ -90,7 +101,7 @@ export default function NASAPage({responses, setResponses, editable, selectedTas
               name="physicalDemand"
               min="0"
               max="100"
-              step="1"
+              step="5"
               value={responses.physicalDemand || ''}
               onChange={handleSliderChange}
               className="w-full"
@@ -120,7 +131,7 @@ export default function NASAPage({responses, setResponses, editable, selectedTas
               name="temporalDemand"
               min="0"
               max="100"
-              step="1"
+              step="5"
               value={responses.temporalDemand || ''}
               onChange={handleSliderChange}
               className="w-full"
@@ -150,7 +161,7 @@ export default function NASAPage({responses, setResponses, editable, selectedTas
             name="performance"
             min="0"
             max="100"
-            step="1"
+            step="5"
             value={responses.performance || ''}
             onChange={handleSliderChange}
             className="w-full"
@@ -180,7 +191,7 @@ export default function NASAPage({responses, setResponses, editable, selectedTas
             name="effort"
             min="0"
             max="100"
-            step="1"
+            step="5"
             value={responses.effort || ''}
             onChange={handleSliderChange}
             className="w-full"
@@ -210,7 +221,7 @@ export default function NASAPage({responses, setResponses, editable, selectedTas
             name="frustration"
             min="0"
             max="100"
-            step="1"
+            step="5"
             value={responses.frustration || ''}
             onChange={handleSliderChange}
             className="w-full"

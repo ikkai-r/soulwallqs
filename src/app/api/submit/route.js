@@ -7,7 +7,7 @@ export async function POST(request) {
   const { data } = await request.json();
 
   const pid = uuidv4();
-  const order = data.nasaResponses.task =='SoulWall' ? 1 : 0;  //1 for SoulWall first, 0 for Map
+  const order = data.nasaResponses.task == 'SoulWall' ? 1 : 0;  //1 for SoulWall first, 0 for Map
 
   const responses = [
     {
@@ -28,6 +28,14 @@ export async function POST(request) {
     }
   ];
 
+
+  console.log(data.visualResponses);
+  console.log(data.visualResponses2); 
+  console.log(data.spatialResponses);
+  console.log(data.spatialResponses2);
+  console.log(data.textualResponses);
+  console.log(data.textualResponses2);
+
   // Insert demographic responses
   await pool.query(
     `INSERT INTO demoResponses (pid, age, sex, hand, vr) VALUES ($1, $2, $3, $4, $5)`,
@@ -36,6 +44,7 @@ export async function POST(request) {
 
   // Insert SB responses
   await insertGenericResponses('sbResponses', 15, data.sbResponses, pid);
+
 
   responses.forEach(async ({ nasa, ssq, ueqs, textual, spatial, visual }) => {
     const task = nasa.task;
@@ -47,8 +56,8 @@ export async function POST(request) {
 
     // NASA
     await pool.query(
-      `INSERT INTO nasaResponses (pid, ordr, task, mentalDemand, physicalDemand, temporalDemand, performance, effort, frustration)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
+      `INSERT INTO nasaResponses (pid, ordr, task, mentalDemand, physicalDemand, temporalDemand, performance, effort, frustration, timesecs)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
       [
         pid,
         order,
@@ -58,7 +67,8 @@ export async function POST(request) {
         nasa.temporalDemand,
         nasa.performance,
         nasa.effort,
-        nasa.frustration
+        nasa.frustration,
+        nasa.timeSecs,
       ]
     );
 
@@ -69,14 +79,14 @@ export async function POST(request) {
       const correctIds = [1, 5, 9, 10, 11, 12, 13, 14, 16, 19]
 
       visualScore = correctIds.reduce(
-        (acc, id) => acc + (visual.includes(id) ? 1 : 0),
+        (acc, id) => acc + (visual.selectedIds.includes(id) ? 1 : 0),
         0
       );
       console.log('visual score sw', visualScore);
     } else {
       const correctIds = [1, 2, 3, 5, 6, 8, 10, 12, 15, 18]
       visualScore = correctIds.reduce(
-        (acc, id) => acc + (visual.includes(id) ? 1 : 0),
+        (acc, id) => acc + (visual.selectedIds.includes(id) ? 1 : 0),
         0
       );
       console.log('visual score ct', visualScore);
@@ -84,8 +94,8 @@ export async function POST(request) {
 
     visualPt = visualScore / 10;
     await pool.query(
-      `INSERT INTO visualResponses (pid, ordr, task, selectedIds, score, pt) VALUES ($1, $2, $3, $4, $5, $6)`,
-      [pid, order, task, visual.join(', '), visualScore, visualPt]
+      `INSERT INTO visualResponses (pid, ordr, task, selectedIds, score, pt, timesecs) VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+      [pid, order, task, visual.selectedIds.join(', '), visualScore, visualPt, visual.timesecs]
     );
    
     // Spatial
@@ -122,13 +132,16 @@ async function insertGenericResponses(table, count, data, pid, order = null, tas
       correctAnswers = ['i', 'j', 'm', 'a', 'b', 'e', 'f', 'o', 'r', 's', 'g', 'p', 'q', 'c', 'n', 'd', 'h', 'k', 't', 'l'];
     }
 
-    let score = Object.entries(userAnswers).reduce((acc, [key, val]) => {
-      return acc + (val.toLowerCase() === correctAnswers[+key - 1].toLowerCase() ? 1 : 0);
-    }, 0);
+   let score = Object.entries(userAnswers)
+      .slice(0, 20)
+      .reduce((acc, [key, val]) => {
+        return acc + (String(val).toLowerCase() === correctAnswers[+key - 1].toLowerCase() ? 1 : 0);
+      }, 0);
     let spatialPt = score / 20;
     
-    columns.push('score', 'pt');
-    values.push(score, spatialPt);
+    columns.push('score', 'pt', 'timesecs');
+    values.push(score, spatialPt, data.timesecs);
+    console.log('spatialtime', data.timesecs);
 
     console.log('spatial score', task, score);
   } else if (table == 'ueqsResponses') {
@@ -184,7 +197,14 @@ async function insertGenericResponses(table, count, data, pid, order = null, tas
           
       columns.push('nscore', 'oscore', 'dscore', 'totalscore');
       values.push(nauseaScore, oculomotorScore, disorientationScore, totalScore);
+  } else if (table == 'textualResponses') {
+
+      columns.push('timesecs');
+      values.push(data.timesecs);
+          console.log('textualtime', data.timesecs);
+
   }
+
 
   // Add response values
   keys.forEach(k => {

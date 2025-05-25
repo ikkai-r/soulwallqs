@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import LikertQ from "../components/LikertQ";
 
 export default function SBPage({ onValidationChange, responses, setResponses }) {
@@ -12,9 +12,10 @@ export default function SBPage({ onValidationChange, responses, setResponses }) 
   };
 
   useEffect(() => {
-    const allFilled = requiredFields.every((field) => responses[field] && responses[field] !== "");
-    onValidationChange(allFilled); 
-  }, [responses, onValidationChange]);
+      const allFilled = requiredFields.every((field) => responses[field] && responses[field] !== "");
+      onValidationChange(allFilled);
+    }, [responses, onValidationChange, requiredFields]);
+
 
     return (
       <div className="flex flex-col items-center min-h-screen p-10 gap-16 font-[family-name:var(--font-geist-sans)] w-full ">

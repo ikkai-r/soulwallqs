@@ -56,8 +56,8 @@ export async function POST(request) {
 
     // NASA
     await pool.query(
-      `INSERT INTO nasaResponses (pid, ordr, task, mentalDemand, physicalDemand, temporalDemand, performance, effort, frustration, timesecs)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
+      `INSERT INTO nasaResponses (pid, ordr, task, mentalDemand, physicalDemand, temporalDemand, performance, effort, frustration)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
       [
         pid,
         order,
@@ -68,7 +68,6 @@ export async function POST(request) {
         nasa.performance,
         nasa.effort,
         nasa.frustration,
-        nasa.timeSecs,
       ]
     );
 

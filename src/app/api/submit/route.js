@@ -17,24 +17,13 @@ export async function POST(request) {
       textual: data.textualResponses,
       spatial: data.spatialResponses,
       visual: data.visualResponses,
-    },
-    {
-      nasa: data.nasaResponses2,
-      ssq: data.ssqResponses2,
-      ueqs: data.ueqsResponses2,
-      textual: data.textualResponses2,
-      spatial: data.spatialResponses2,
-      visual: data.visualResponses2,
     }
   ];
 
 
   console.log(data.visualResponses);
-  console.log(data.visualResponses2); 
   console.log(data.spatialResponses);
-  console.log(data.spatialResponses2);
   console.log(data.textualResponses);
-  console.log(data.textualResponses2);
 
   // Insert demographic responses
   await pool.query(
@@ -189,10 +178,10 @@ async function insertGenericResponses(table, count, data, pid, order = null, tas
       const disorientationSum = ssqWeights.disorientation.reduce((sum, key) => sum + toNumber(key), 0);
       const totalSum = Object.keys(data).reduce((sum, key) => sum + toNumber(key), 0);
 
-      const nauseaScore =  (nauseaSum / 9) * 9.54;
-      const oculomotorScore =  (oculomotorSum / 7) * 7.58;
-      const disorientationScore =  (disorientationSum / 7) * 13.92;
-      const totalScore =  (totalSum / 16) * 3.74;
+      const nauseaScore =  (nauseaSum) * 9.54;
+      const oculomotorScore =  (oculomotorSum) * 7.58;
+      const disorientationScore =  (disorientationSum) * 13.92;
+      const totalScore =  (totalSum) * 3.74;
           
       columns.push('nscore', 'oscore', 'dscore', 'totalscore');
       values.push(nauseaScore, oculomotorScore, disorientationScore, totalScore);

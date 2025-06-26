@@ -15,107 +15,17 @@ export default function Home() {
   const [sbResponses, setsbResponses] = useState({});
 
   const [ssqResponses, setSSQResponses] = useState({});
-  const [ssqResponses2, setSSQResponses2] = useState({});
   const [visualResponses, setVisualResponses] = useState({});
-  const [visualResponses2, setVisualResponses2] = useState({});
   const [spatialResponses, setSpatialResponses] = useState({});
-  const [spatialResponses2, setSpatialResponses2] = useState({});
   const [textualResponses, setTextualResponses] = useState({});
-  const [textualResponses2, setTextualResponses2] = useState({});
   const [ueqsResponses, setUEQSResponses] = useState({});
-  const [ueqsResponses2, setUEQSResponses2] = useState({});
   const [nasaResponses, setNASAResponses] = useState({});
-  const [nasaResponses2, setNASAResponses2] = useState({});
   const [entryTime, setEntryTime] = useState(null);
 
   const [currentSection, setCurrentSection] = useState(0);
 
   const [isValid, setIsValid] = useState(false);
-
-  const getTaskSequence = (iterationIndex) => {
-      const isSecond = iterationIndex === 1;
-      const selectedTask = nasaResponses.task;
-      const otherTask = selectedTask === 'SoulWall' ? 'Map' : 'SoulWall';
-
-      return [
-        {
-          component: () => (
-            <BufferPage text={`Please proceed to perform Task ${iterationIndex + 1} before continuing.`} />
-          ),
-          requiresValidation: false,
-        },
-        {
-          component: () => (
-            <NASAPage
-              responses={isSecond ? nasaResponses2 : nasaResponses}
-              setResponses={isSecond ? setNASAResponses2 : setNASAResponses}
-              selectedTask={isSecond ? otherTask : selectedTask}
-              editable={!isSecond}
-              onValidationChange={setIsValid}
-            />
-          ),
-          requiresValidation: true,
-        },
-        {
-          component: () => (
-            <SSQPage
-              responses={isSecond ? ssqResponses2 : ssqResponses}
-              setResponses={isSecond ? setSSQResponses2 : setSSQResponses}
-              selectedTask={isSecond ? otherTask : selectedTask}
-              onValidationChange={setIsValid}
-            />
-          ),
-          requiresValidation: true,
-        },
-        {
-          component: () => (
-            <VisualPage
-              responses={isSecond ? visualResponses2 : visualResponses}
-              setResponses={isSecond ? setVisualResponses2 : setVisualResponses}
-              selectedTask={isSecond ? otherTask : selectedTask}
-              setEntryTime={setEntryTime}
-                          />
-          ),
-          requiresValidation: false,
-          name: isSecond ? "VisualPage2" : "VisualPage",
-        },
-        {
-          component: () => (
-            <SpatialPage
-              responses={isSecond ? spatialResponses2 : spatialResponses}
-              setResponses={isSecond ? setSpatialResponses2 : setSpatialResponses}
-              selectedTask={isSecond ? otherTask : selectedTask}
-              setEntryTime={setEntryTime}
-            />
-          ),
-          requiresValidation: false,
-          name: isSecond ? "SpatialPage2" : "SpatialPage",
-        },
-        {
-          component: () => (
-            <TextualPage
-              responses={isSecond ? textualResponses2 : textualResponses}
-              setResponses={isSecond ? setTextualResponses2 : setTextualResponses}
-              selectedTask={isSecond ? otherTask : selectedTask}
-              setEntryTime={setEntryTime}
-                          />
-          ),
-          requiresValidation: false,
-          name: isSecond ? "TextualPage2" : "TextualPage",
-        },
-        {
-          component: () => (
-            <UEQSPage
-              responses={isSecond ? ueqsResponses2 : ueqsResponses}
-              setResponses={isSecond ? setUEQSResponses2 : setUEQSResponses}
-              selectedTask={isSecond ? otherTask : selectedTask}
-              onValidationChange={setIsValid}
-            />
-          ),
-          requiresValidation: true,
-        },
-      ];
-    };
+  const selectedTask = nasaResponses.task;
 
   const sections = [
     { 
@@ -140,7 +50,82 @@ export default function Home() {
       ), 
       requiresValidation: false,
     },
-     ...[0, 1].flatMap(i => getTaskSequence(i)),
+    {
+          component: () => (
+            <BufferPage text={`Please proceed to perform Task 1 before continuing.`} />
+          ),
+          requiresValidation: false,
+        },
+        {
+          component: () => (
+            <NASAPage
+              responses={nasaResponses}
+              setResponses={setNASAResponses}
+              selectedTask={selectedTask}
+              editable={true}
+              onValidationChange={setIsValid}
+            />
+          ),
+          requiresValidation: true,
+        },
+        {
+          component: () => (
+            <SSQPage
+              responses={ssqResponses}
+              setResponses={setSSQResponses}
+              selectedTask={selectedTask}
+              onValidationChange={setIsValid}
+            />
+          ),
+          requiresValidation: true,
+        },
+        {
+          component: () => (
+            <VisualPage
+              responses={visualResponses}
+              setResponses={setVisualResponses}
+              selectedTask={selectedTask}
+              setEntryTime={setEntryTime}
+                          />
+          ),
+          requiresValidation: false,
+          name: "VisualPage",
+        },
+        {
+          component: () => (
+            <SpatialPage
+              responses={spatialResponses}
+              setResponses={setSpatialResponses}
+              selectedTask={selectedTask}
+              setEntryTime={setEntryTime}
+            />
+          ),
+          requiresValidation: false,
+          name: "SpatialPage",
+        },
+        {
+          component: () => (
+            <TextualPage
+              responses={textualResponses}
+              setResponses={setTextualResponses}
+              selectedTask={selectedTask}
+              setEntryTime={setEntryTime}
+                          />
+          ),
+          requiresValidation: false,
+          name: "TextualPage",
+        },
+        {
+          component: () => (
+            <UEQSPage
+              responses={ueqsResponses}
+              setResponses={setUEQSResponses}
+              selectedTask={selectedTask}
+              onValidationChange={setIsValid}
+            />
+          ),
+          requiresValidation: true,
+        },
     { 
       component: (props) => (
         <BufferPage
@@ -178,21 +163,6 @@ export default function Home() {
           ...prev,
           timesecs: duration,
         }));
-    } else if (current.name === "VisualPage2") {  
-      setVisualResponses2(prev => ({
-          ...prev,
-          timesecs: duration,
-        }));
-    } else if (current.name === "SpatialPage2") {
-      setSpatialResponses2(prev => ({
-          ...prev,
-          timesecs: duration,
-        }));
-    } else if (current.name === "TextualPage2") {  
-      setTextualResponses2(prev => ({
-          ...prev,
-          timesecs: duration,
-        }));
     }
 
     setEntryTime(null);
@@ -212,17 +182,11 @@ export default function Home() {
       demoResponses,
       sbResponses,
       ssqResponses,
-      ssqResponses2,
       visualResponses,
-      visualResponses2,
       spatialResponses,
-      spatialResponses2,
       textualResponses,
-      textualResponses2,
       ueqsResponses,
-      ueqsResponses2,
       nasaResponses,
-      nasaResponses2
     };
   
     try {

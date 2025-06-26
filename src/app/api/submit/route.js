@@ -27,25 +27,25 @@ export async function POST(request) {
 
   // Insert demographic responses
   await pool.query(
-    `INSERT INTO demoResponses (pid, age, sex, hand, vr) VALUES ($1, $2, $3, $4, $5)`,
+    `INSERT INTO demoresponses (pid, age, sex, hand, vr) VALUES ($1, $2, $3, $4, $5)`,
     [pid, data.demoResponses.age, data.demoResponses.sex, data.demoResponses.hand, data.demoResponses.VRf]
   );
 
   // Insert SB responses
-  await insertGenericResponses('sbResponses', 15, data.sbResponses, pid);
+  await insertGenericResponses('sbresponses', 15, data.sbResponses, pid);
 
 
   responses.forEach(async ({ nasa, ssq, ueqs, textual, spatial, visual }) => {
     const task = nasa.task;
 
     // SSQ, UEQs, Textual
-    await insertGenericResponses('ssqResponses', 16, ssq, pid, order, task);
-    await insertGenericResponses('ueqsResponses', 8, ueqs, pid, order, task);
-    await insertGenericResponses('textualResponses', 20, textual, pid, order, task);
+    await insertGenericResponses('ssqresponses', 16, ssq, pid, order, task);
+    await insertGenericResponses('ueqsresponses', 8, ueqs, pid, order, task);
+    await insertGenericResponses('textualresponses', 20, textual, pid, order, task);
 
     // NASA
     await pool.query(
-      `INSERT INTO nasaResponses (pid, ordr, task, mentalDemand, physicalDemand, temporalDemand, performance, effort, frustration)
+      `INSERT INTO nasaresponses (pid, ordr, task, mentalDemand, physicalDemand, temporalDemand, performance, effort, frustration)
        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
       [
         pid,
@@ -82,12 +82,12 @@ export async function POST(request) {
 
     visualPt = visualScore / 10;
     await pool.query(
-      `INSERT INTO visualResponses (pid, ordr, task, selectedIds, score, pt, timesecs) VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+      `INSERT INTO visualresponses (pid, ordr, task, selectedIds, score, pt, timesecs) VALUES ($1, $2, $3, $4, $5, $6, $7)`,
       [pid, order, task, visual.selectedIds.join(', '), visualScore, visualPt, visual.timesecs]
     );
    
     // Spatial
-    await insertGenericResponses('spatialResponses', 20, spatial, pid, order, task, true);
+    await insertGenericResponses('spatialresponses', 20, spatial, pid, order, task, true);
   });
 
   return NextResponse.json({ message: 'Data saved successfully!' }, { status: 200 });
@@ -111,7 +111,7 @@ async function insertGenericResponses(table, count, data, pid, order = null, tas
     values.push(order, task);
   }
 
-  if(table == 'spatialResponses') {
+  if(table == 'spatialresponses') {
     let userAnswers = data;
     let correctAnswers = [];
     if (task == 'SoulWall') { 
@@ -123,7 +123,9 @@ async function insertGenericResponses(table, count, data, pid, order = null, tas
    let score = Object.entries(userAnswers)
       .slice(0, 20)
       .reduce((acc, [key, val]) => {
-        return acc + (String(val).toLowerCase() === correctAnswers[+key - 1].toLowerCase() ? 1 : 0);
+          const userAnswer = (val ?? '').toString().toLowerCase();
+          const correctAnswer = (correctAnswers[+key - 1] ?? '').toLowerCase();
+          return acc + (userAnswer === correctAnswer ? 1 : 0);
       }, 0);
     let spatialPt = score / 20;
     
@@ -132,7 +134,7 @@ async function insertGenericResponses(table, count, data, pid, order = null, tas
     console.log('spatialtime', data.timesecs);
 
     console.log('spatial score', task, score);
-  } else if (table == 'ueqsResponses') {
+  } else if (table == 'ueqsresponses') {
     const pragmaticMean = calculateMeanRange(data, 1, 4);
     const hedonicMean = calculateMeanRange(data, 5, 8); 
 
@@ -141,7 +143,7 @@ async function insertGenericResponses(table, count, data, pid, order = null, tas
 
     console.log('Pragmatic Quality Mean:', pragmaticMean.toFixed(2));
     console.log('Hedonic Quality Mean:', hedonicMean.toFixed(2));
-  } else if (table == 'sbResponses') {
+  } else if (table == 'sbresponses') {
       const sbMean = calculateMeanRange(data, 1, 15);
       let sbCategory = "Poor"
 
@@ -153,7 +155,7 @@ async function insertGenericResponses(table, count, data, pid, order = null, tas
     values.push(sbMean, sbCategory);
 
     console.log('SB Mean:', sbMean.toFixed(2));
-  }  else if (table == 'ssqResponses') {
+  }  else if (table == 'ssqresponses') {
       const ssqWeights = {
         nausea: ['q1', 'q2', 'q6', 'q7', 'q8', 'q9', 'q15', 'q16', 'q10'],
         oculomotor: ['q1', 'q2', 'q3', 'q4', 'q5', 'q9', 'q11'],
@@ -185,7 +187,7 @@ async function insertGenericResponses(table, count, data, pid, order = null, tas
           
       columns.push('nscore', 'oscore', 'dscore', 'totalscore');
       values.push(nauseaScore, oculomotorScore, disorientationScore, totalScore);
-  } else if (table == 'textualResponses') {
+  } else if (table == 'textualresponses') {
 
       columns.push('timesecs');
       values.push(data.timesecs);
